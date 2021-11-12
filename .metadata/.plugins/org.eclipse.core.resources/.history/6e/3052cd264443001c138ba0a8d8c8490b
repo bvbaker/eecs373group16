@@ -241,41 +241,27 @@ uint16_t color_read(char color) {
 	buffer[0] = 0;
 	buffer[1] = 0;
 
-	// first, check valid, and don't stop asking until we get a valid response
-	while (!buffer[0]) {
-		buffer[0] = (0b1 << 7) | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
-
-		// read status reg
-
-		buffer[0] &= 0x01; // check the first bit for rgbc valid
-	}
-
-	buffer[0] = (0b101 << 5);
-
 	switch (color) {
 	case 'r':
-		buffer[0] |= COLOR_DATA_R;
+
 		break;
 
 	case 'g':
-		buffer[0] |= COLOR_DATA_G;
+
 		break;
 
 	case 'b':
-		buffer[0] |= COLOR_DATA_B;
+
 		break;
 
 	case 'c':
-		buffer[0] |= COLOR_DATA_C;
+
 		break;
 	default:
 		printf("error: invalid color read");
 		return 0;
 	}
 
-	// read data
-
-	return (uint16_t) (buff[0] | buff[1] << 4);
 
 }
 

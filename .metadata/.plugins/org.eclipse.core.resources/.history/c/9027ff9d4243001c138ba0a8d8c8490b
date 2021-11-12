@@ -32,15 +32,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define COLOR_I2C_ADDR 		0x29
-
-#define COLOR_ENABLE_SAD 	0x00
-#define COLOR_STATUS_SAD 	0x13
-
-#define COLOR_DATA_C 		0x14
-#define COLOR_DATA_R		0x16
-#define COLOR_DATA_G		0x18
-#define COLOR_DATA_B		0x1A
 
 /* USER CODE END PD */
 
@@ -56,9 +47,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
-void color_init();
-uint16_t color_read(char color);
 
 /* USER CODE END PFP */
 
@@ -229,55 +217,6 @@ void EXTI15_10_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
-void color_init() {
-	uint8_t buffer = 0xA0 |
-}
-
-uint16_t color_read(char color) {
-	uint8_t buffer[2];
-	uint8_t SAD;
-
-	buffer[0] = 0;
-	buffer[1] = 0;
-
-	// first, check valid, and don't stop asking until we get a valid response
-	while (!buffer[0]) {
-		buffer[0] = (0b1 << 7) | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
-
-		// read status reg
-
-		buffer[0] &= 0x01; // check the first bit for rgbc valid
-	}
-
-	buffer[0] = (0b101 << 5);
-
-	switch (color) {
-	case 'r':
-		buffer[0] |= COLOR_DATA_R;
-		break;
-
-	case 'g':
-		buffer[0] |= COLOR_DATA_G;
-		break;
-
-	case 'b':
-		buffer[0] |= COLOR_DATA_B;
-		break;
-
-	case 'c':
-		buffer[0] |= COLOR_DATA_C;
-		break;
-	default:
-		printf("error: invalid color read");
-		return 0;
-	}
-
-	// read data
-
-	return (uint16_t) (buff[0] | buff[1] << 4);
-
-}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -243,14 +243,14 @@ uint16_t color_read(char color) {
 
 	// first, check valid, and don't stop asking until we get a valid response
 	while (!buffer[0]) {
-		buffer[0] = (0b1 << 7) | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
+		buffer[0] = 0xA0 | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
 
 		// read status reg
 
 		buffer[0] &= 0x01; // check the first bit for rgbc valid
 	}
 
-	buffer[0] = (0b101 << 5);
+	buffer[0] = 0xA0;
 
 	switch (color) {
 	case 'r':
@@ -273,9 +273,6 @@ uint16_t color_read(char color) {
 		return 0;
 	}
 
-	// read data
-
-	return (uint16_t) (buff[0] | buff[1] << 4);
 
 }
 

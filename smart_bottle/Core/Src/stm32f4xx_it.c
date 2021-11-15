@@ -57,8 +57,8 @@
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 
-void color_init();
-uint16_t color_read(char color);
+void color_init(I2C_HandleTypeDef hi2c1);
+uint16_t color_read(I2C_HandleTypeDef hi2c1, char color);
 
 /* USER CODE END PFP */
 
@@ -230,7 +230,7 @@ void EXTI15_10_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
-void color_init() {
+void color_init(I2C_HandleTypeDef hi2c1) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
@@ -242,7 +242,7 @@ void color_init() {
 	}
 }
 
-uint16_t color_read(char color) {
+uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
@@ -259,7 +259,7 @@ uint16_t color_read(char color) {
 			while(1);
 		}
 
-		ret = HAL_I2C_Master_Receive()&hi2c1, (COLOR_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+		ret = HAL_I2C_Master_Receive(&hi2c1, (COLOR_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
 		if ( ret != HAL_OK ) {
 			while(1);
 		}
@@ -297,12 +297,12 @@ uint16_t color_read(char color) {
 		while(1);
 	}
 
-	ret = HAL_I2C_Master_Receive()&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Receive(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
 
-	return (uint16_t) (buff[0] | buff[1] << 8);
+	return (uint16_t) (buffer[0] | buffer[1] << 8);
 
 }
 

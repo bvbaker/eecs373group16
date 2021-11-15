@@ -233,13 +233,7 @@ void EXTI15_10_IRQHandler(void)
 void color_init() {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
-
-	buffer[0] = (1 << 7) | COLOR_ENABLE_SAD;
-	buffer[1] = 0b11; // AEN and PON
-	ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
-	if ( ret != HAL_OK ) {
-		while(1);
-	}
+	uint8_t buffer = 0xA0 |
 }
 
 uint16_t color_read(char color) {

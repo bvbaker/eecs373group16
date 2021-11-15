@@ -797,3 +797,296 @@
 2021-11-10 18:33:47,906 [INFO] ApiDb:280 - User favorites MCUs=[]
 2021-11-10 18:33:47,907 [INFO] ApiDb:276 - Save user favorites file C:\Users\Bred/.stm32cubeide/favorites.boards.txt: 1 item(s)
 2021-11-10 18:33:47,907 [INFO] ApiDb:280 - User favorites Boards=[NUCLEO-F401RE]
+2021-11-10 18:35:55,343 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,662 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,662 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,662 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,662 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,663 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,664 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,664 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,686 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,859 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,859 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,860 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,860 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,860 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,861 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,862 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:35:55,885 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,295 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,296 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,297 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,297 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,297 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,297 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,319 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,473 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,474 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:06,496 [INFO] ADCParametersView:103 -                Rank 1 : false
+2021-11-10 18:36:10,649 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,649 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,667 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,667 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,668 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,668 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,683 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,683 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,684 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,684 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,696 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,697 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,697 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,697 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,736 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,736 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,738 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,738 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,741 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:10,741 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,052 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,052 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,076 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,076 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,077 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,077 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,090 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,090 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,090 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,090 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,104 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,104 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,104 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,104 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,137 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,137 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,138 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,138 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,141 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:14,141 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:36:46,242 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:37:09,435 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 484247928 Bytes (701497344)
+2021-11-10 18:37:15,296 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 505741688 Bytes (701497344)
+2021-11-10 18:37:17,973 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 330378752 Bytes (701497344)
+2021-11-10 18:37:18,168 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SPI
+2021-11-10 18:37:18,168 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: NVIC
+2021-11-10 18:37:18,168 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: USART
+2021-11-10 18:37:18,168 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SYS
+2021-11-10 18:37:18,169 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: GPIO
+2021-11-10 18:37:18,169 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: ADC
+2021-11-10 18:37:18,169 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: RCC
+2021-11-10 18:37:18,169 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-10 18:37:18,169 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-10 18:37:18,169 [INFO] CodeGenerator:663 - code generatio: config db path: C:\ST\STM32CubeIDE_1.7.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.3.0.202107141111\\db\
+2021-11-10 18:37:18,176 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:37:18,176 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:37:18,177 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:37:18,177 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:37:18,452 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp_save
+2021-11-10 18:37:18,491 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp
+2021-11-10 18:37:18,511 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp_save
+2021-11-10 18:37:18,549 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp
+2021-11-10 18:37:18,721 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c_save
+2021-11-10 18:37:18,778 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c
+2021-11-10 18:37:18,782 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h_save
+2021-11-10 18:37:18,838 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h
+2021-11-10 18:37:18,849 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c_save
+2021-11-10 18:37:18,948 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c
+2021-11-10 18:37:18,950 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp_save
+2021-11-10 18:37:18,999 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp
+2021-11-10 18:37:19,010 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h_save
+2021-11-10 18:37:19,069 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h
+2021-11-10 18:37:19,104 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h_save
+2021-11-10 18:37:19,152 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h
+2021-11-10 18:37:19,159 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c_save
+2021-11-10 18:37:19,255 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c
+2021-11-10 18:37:19,811 [INFO] ProjectBuilder:2578 - Time for Copy HAL[1] : 136mS.
+2021-11-10 18:37:19,814 [INFO] ProjectBuilder:3622 - Project Generator version: 3.14.1
+2021-11-10 18:37:20,123 [INFO] ConfigFileManager:1271 - The Die is : DIE433
+2021-11-10 18:37:21,269 [INFO] ProjectBuilder:3789 - Time for Generating toolchain IDE Files: 1455mS.
+2021-11-10 18:37:21,270 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-10 18:37:21,272 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-10 18:37:37,244 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,2,46,402x426,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:37:38,526 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:37:53,422 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:15,341 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:15,382 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:15,466 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,466 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,466 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,466 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,468 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,468 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,469 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,469 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,512 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,512 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,514 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,514 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,557 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,557 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,559 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,559 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:15,571 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:15,603 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:17,854 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:17,889 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:17,969 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,969 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,969 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,969 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,971 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,971 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,971 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:17,971 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,017 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,017 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,018 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,018 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,064 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,064 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,066 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,066 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:18,078 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:18,112 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:20,156 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:20,192 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:20,280 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,280 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,280 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,280 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,282 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,282 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,282 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,282 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,327 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,327 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,329 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,329 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,374 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,374 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,376 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,376 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:20,388 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-10 18:38:20,421 [INFO] NvicIntPanel:96 - NVIC parent = com.st.microxplorer.plugins.ip.nvic.MultiNvicIntPanel[,0,0,0x0,invalid,layout=javax.swing.BoxLayout,alignmentX=0.0,alignmentY=0.0,border=,flags=9,maximumSize=,minimumSize=,preferredSize=]
+2021-11-10 18:38:38,035 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 369992960 Bytes (731906048)
+2021-11-10 18:38:39,931 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 414033152 Bytes (731906048)
+2021-11-10 18:38:42,210 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 477997480 Bytes (731906048)
+2021-11-10 18:38:42,404 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SPI
+2021-11-10 18:38:42,404 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: NVIC
+2021-11-10 18:38:42,404 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: USART
+2021-11-10 18:38:42,404 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SYS
+2021-11-10 18:38:42,405 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: GPIO
+2021-11-10 18:38:42,405 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: ADC
+2021-11-10 18:38:42,405 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: RCC
+2021-11-10 18:38:42,405 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-10 18:38:42,405 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-10 18:38:42,405 [INFO] CodeGenerator:663 - code generatio: config db path: C:\ST\STM32CubeIDE_1.7.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.3.0.202107141111\\db\
+2021-11-10 18:38:42,412 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:42,412 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:42,412 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:42,412 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-10 18:38:42,626 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp_save
+2021-11-10 18:38:42,661 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp
+2021-11-10 18:38:42,682 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp_save
+2021-11-10 18:38:42,723 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp
+2021-11-10 18:38:42,918 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c_save
+2021-11-10 18:38:42,974 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c
+2021-11-10 18:38:42,977 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h_save
+2021-11-10 18:38:43,019 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h
+2021-11-10 18:38:43,031 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c_save
+2021-11-10 18:38:43,119 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c
+2021-11-10 18:38:43,122 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp_save
+2021-11-10 18:38:43,160 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp
+2021-11-10 18:38:43,170 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h_save
+2021-11-10 18:38:43,229 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h
+2021-11-10 18:38:43,264 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h_save
+2021-11-10 18:38:43,309 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h
+2021-11-10 18:38:43,316 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c_save
+2021-11-10 18:38:43,430 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c
+2021-11-10 18:38:43,996 [INFO] ProjectBuilder:2578 - Time for Copy HAL[1] : 133mS.
+2021-11-10 18:38:43,999 [INFO] ProjectBuilder:3622 - Project Generator version: 3.14.1
+2021-11-10 18:38:44,323 [INFO] ConfigFileManager:1271 - The Die is : DIE433
+2021-11-10 18:38:45,362 [INFO] ProjectBuilder:3789 - Time for Generating toolchain IDE Files: 1363mS.
+2021-11-10 18:38:45,363 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-10 18:38:45,365 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-11 17:53:44,648 [INFO] Gpio:254 - dependency for GPIO [ADC1, I2C1, I2C3, RCC, SPI2, SYS, USART2]
+2021-11-11 17:53:47,125 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 524303224 Bytes (819986432)
+2021-11-11 17:53:48,177 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 545801080 Bytes (819986432)
+2021-11-11 17:53:49,567 [INFO] UtilMem:74 - End SaveConfig() Used Memory: 625492856 Bytes (819986432)
+2021-11-11 17:53:49,765 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SPI
+2021-11-11 17:53:49,765 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: NVIC
+2021-11-11 17:53:49,765 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: USART
+2021-11-11 17:53:49,765 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: SYS
+2021-11-11 17:53:49,766 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: GPIO
+2021-11-11 17:53:49,766 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: ADC
+2021-11-11 17:53:49,766 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: RCC
+2021-11-11 17:53:49,766 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-11 17:53:49,766 [INFO] BlockDiagram:2740 - set Specific Code input for plugin: I2C
+2021-11-11 17:53:49,767 [INFO] CodeGenerator:663 - code generatio: config db path: C:\ST\STM32CubeIDE_1.7.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.3.0.202107141111\\db\
+2021-11-11 17:53:49,801 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-11 17:53:49,802 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-11 17:53:49,802 [WARN] IP:2125 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2021-11-11 17:53:49,802 [WARN] IP:2125 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2021-11-11 17:53:50,073 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp_save
+2021-11-11 17:53:50,118 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\license.tmp
+2021-11-11 17:53:50,157 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp_save
+2021-11-11 17:53:50,201 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\gpio.tmp
+2021-11-11 17:53:50,442 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c_save
+2021-11-11 17:53:50,518 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_it.c
+2021-11-11 17:53:50,525 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h_save
+2021-11-11 17:53:50,581 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_it.h
+2021-11-11 17:53:50,599 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c_save
+2021-11-11 17:53:50,690 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\stm32f4xx_hal_msp.c
+2021-11-11 17:53:50,697 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp_save
+2021-11-11 17:53:50,740 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\MXTmpFiles\system.tmp
+2021-11-11 17:53:50,757 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h_save
+2021-11-11 17:53:50,825 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\stm32f4xx_hal_conf.h
+2021-11-11 17:53:50,871 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h_save
+2021-11-11 17:53:50,933 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Inc\main.h
+2021-11-11 17:53:50,946 [INFO] CodeEngine:239 - oldGeneratedFile, C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c_save
+2021-11-11 17:53:51,073 [INFO] CodeEngine:257 - Generated code: C:\Users\Bred\OneDrive\Desktop\Michigan\EECS 373\Final Project\eecs373group16\smart_bottle\Core\Src\main.c
+2021-11-11 17:53:51,783 [INFO] ProjectBuilder:2578 - Time for Copy HAL[1] : 214mS.
+2021-11-11 17:53:51,786 [INFO] ProjectBuilder:3622 - Project Generator version: 3.14.1
+2021-11-11 17:53:52,143 [INFO] ConfigFileManager:1271 - The Die is : DIE433
+2021-11-11 17:53:53,289 [INFO] ProjectBuilder:3789 - Time for Generating toolchain IDE Files: 1503mS.
+2021-11-11 17:53:53,290 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-11 17:53:53,293 [INFO] ProjectBuilder:2457 - Time for Copy CMSIS : 0mS.
+2021-11-14 15:52:58,195 [INFO] Activator:177 - 
+
+
+2021-11-14 15:52:58,196 [INFO] Activator:178 - !SESSION log4j initialized

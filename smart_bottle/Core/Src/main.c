@@ -20,10 +20,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-/*addded*/
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include<string.h>
+#include<stdio.h>
 
 /* USER CODE END Includes */
 
@@ -79,6 +79,8 @@ static void MX_SPI2_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	uint16_t raw;    //12-bit ADC reading
+	char msg[10];    //buffer used to transmit over UART
 
   /* USER CODE END 1 */
 
@@ -114,6 +116,24 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  //Test: Set GPIO pin high
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
+
+	  //Get ADC value
+	  HAL_ADC_Start(&hadc1);
+	  HAL_ADC_PollForConversion(&hac1, HAL_MAX_DELAY);
+	  raw = HAL_ADC_GetValue(&hadc1);  //0V: 0; 3.3V: 4095
+
+	  //Test: Set GPIO pin low
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
+
+	  //Convert to string and print
+	  sprintf(msg, "%hu\r\u", raw);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+
+	  //Pretend we have something else to do for a while
+	  HAL_Delay(1);
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -369,7 +389,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LD2_Pin|GPIO_PIN_10, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
@@ -377,12 +397,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : LD2_Pin */
-  GPIO_InitStruct.Pin = LD2_Pin;
+  /*Configure GPIO pins : LD2_Pin PA10 */
+  GPIO_InitStruct.Pin = LD2_Pin|GPIO_PIN_10;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PC10 PC11 PC12 */
   GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;

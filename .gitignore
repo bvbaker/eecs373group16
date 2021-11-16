@@ -4,3 +4,11 @@ README.md
 smart_bottle/*
 !smart_bottle/Core/Src
 !smart_bottle/Core/Inc
+.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+*.snap
+*.xmi
+*.resources
+*.snap
+*.snap
+*.pdom
+*.log

@@ -1,0 +1,6 @@
+.metadata
+.DS_Store
+README.md
+smart_bottle/*
+!smart_bottle/Core/Src
+!smart_bottle/Core/Inc

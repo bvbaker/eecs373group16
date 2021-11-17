@@ -121,7 +121,7 @@ int main(void)
 
 	  //Get ADC value
 	  HAL_ADC_Start(&hadc1);
-	  HAL_ADC_PollForConversion(&hac1, HAL_MAX_DELAY);
+	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 	  raw = HAL_ADC_GetValue(&hadc1);  //0V: 0; 3.3V: 4095
 
 	  //Test: Set GPIO pin low

@@ -12,3 +12,12 @@ smart_bottle/*
 *.snap
 *.pdom
 *.log
+smart_bottle/.cproject
+smart_bottle/.mxproject
+smart_bottle/.settings/language.settings.xml
+smart_bottle/Core/Src/stm32f4xx_it.c
+smart_bottle/Debug/Core/Src/main.o
+smart_bottle/Debug/Core/Src/main.su
+smart_bottle/Debug/Core/Src/stm32f4xx_it.o
+smart_bottle/Debug/Core/Src/stm32f4xx_it.su
+smart_bottle/Debug/Core/Src/subdir.mk

@@ -37,6 +37,8 @@
 #define COLOR_ENABLE_SAD 	0x00
 #define COLOR_STATUS_SAD 	0x13
 
+#define COLOR_COMMAND_BIT	0x80
+
 #define COLOR_DATA_C 		0x14
 #define COLOR_DATA_R		0x16
 #define COLOR_DATA_G		0x18
@@ -57,8 +59,7 @@
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 
-void color_init(I2C_HandleTypeDef hi2c1);
-uint16_t color_read(I2C_HandleTypeDef hi2c1, char color);
+
 
 /* USER CODE END PFP */
 
@@ -251,7 +252,7 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 
 	// first, check valid, and don't stop asking until we get a valid response
 	while (!buffer[0]) {
-		buffer[0] = (0b1 << 7) | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
+		buffer[0] = COLOR_COMMAND_BIT | COLOR_STATUS_SAD; // buffer[0] holds the sub-address
 
 		// read status reg
 		ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
@@ -287,7 +288,7 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 		buffer[0] |= COLOR_DATA_C;
 		break;
 	default:
-		printf("error: invalid color read");
+//		printf("error: invalid color read");
 		return 0;
 	}
 

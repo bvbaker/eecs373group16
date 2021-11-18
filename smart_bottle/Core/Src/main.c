@@ -109,33 +109,41 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
+  color_init(hi2c1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+
+
   while (1)
   {
     /* USER CODE END WHILE */
-	  //Test: Set GPIO pin high
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
 
-	  //Get ADC value
-	  HAL_ADC_Start(&hadc1);
-	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-	  raw = HAL_ADC_GetValue(&hadc1);  //0V: 0; 3.3V: 4095
-
-	  //Test: Set GPIO pin low
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
-
-	  //Convert to string and print
-	  sprintf(msg, "%hu\r\u", raw);
-	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-
-	  //Pretend we have something else to do for a while
-	  HAL_Delay(1);
 
 
     /* USER CODE BEGIN 3 */
+	  //Test: Set GPIO pin high
+//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_SET);
+//
+//	  //Get ADC value
+//	  HAL_ADC_Start(&hadc1);
+//	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//	  raw = HAL_ADC_GetValue(&hadc1);  //0V: 0; 3.3V: 4095
+//
+//	  //Test: Set GPIO pin low
+//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_10, GPIO_PIN_RESET);
+//
+//	  //Convert to string and print
+//	  sprintf(msg, "%hu\r\u", raw);
+//	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+//
+//	  //Pretend we have something else to do for a while
+//	  HAL_Delay(1);
+
+
   }
   /* USER CODE END 3 */
 }

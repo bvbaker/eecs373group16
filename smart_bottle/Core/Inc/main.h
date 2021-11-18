@@ -54,7 +54,8 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void extern color_init(I2C_HandleTypeDef hi2c1);
+uint16_t extern color_read(I2C_HandleTypeDef hi2c1, char color);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -250,6 +250,18 @@ void color_init(I2C_HandleTypeDef hi2c1) {
 	}
 }
 
+void color_off(I2C_HandleTypeDef hi2c1) {
+	uint8_t buffer[2];
+	HAL_StatusTypeDef ret;
+
+	buffer[0] = COLOR_COMMAND_BIT | COLOR_ENABLE_SAD;
+	buffer[1] = 0b0; // PON
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+}
+
 uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;

@@ -130,8 +130,15 @@ int main(void)
 	  c = color_read(hi2c1, 'c');
 	  HAL_Delay(1);
 
-	  r++;
-	  r--;
+	  color_off(hi2c1); // does not turn off the LED :(
+
+	  HAL_Delay(100);
+
+	  color_init(hi2c1);
+
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

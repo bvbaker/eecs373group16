@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define COLOR_I2C_ADDR 		0x29
+#define COLOR_I2C_ADDR 		(0x29 << 1)
 
 #define COLOR_ENABLE_SAD 	0x00
 #define COLOR_STATUS_SAD 	0x13
@@ -235,6 +235,13 @@ void color_init(I2C_HandleTypeDef hi2c1) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
+	buffer[0] = COLOR_COMMAND_BIT | COLOR_ENABLE_SAD;
+	buffer[1] = 0b1; // PON
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
 	buffer[0] = (1 << 7) | COLOR_ENABLE_SAD;
 	buffer[1] = 0b11; // AEN and PON
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
@@ -269,7 +276,7 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 		buffer[0] &= 0x01; // check the first bit for rgbc valid
 	}
 
-	buffer[0] = (0b101 << 5);
+	buffer[0] = COLOR_COMMAND_BIT;
 
 	switch (color) {
 	case 'r':
@@ -303,7 +310,7 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 		while(1);
 	}
 
-	return (uint16_t) (buffer[0] | buffer[1] << 8);
+	return (uint16_t) ((buffer[0] & 0xFF) | buffer[1] << 8);
 
 }
 

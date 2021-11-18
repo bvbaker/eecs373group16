@@ -115,14 +115,24 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
+  uint8_t r, g, b, c;
 
 
   while (1)
   {
+
+	  r = color_read(hi2c1, 'r');
+	  HAL_Delay(1);
+	  g = color_read(hi2c1, 'g');
+	  HAL_Delay(1);
+	  b = color_read(hi2c1, 'b');
+	  HAL_Delay(1);
+	  c = color_read(hi2c1, 'c');
+	  HAL_Delay(1);
+
+	  r++;
+	  r--;
     /* USER CODE END WHILE */
-
-
 
     /* USER CODE BEGIN 3 */
 	  //Test: Set GPIO pin high

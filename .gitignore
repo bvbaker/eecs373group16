@@ -4,6 +4,7 @@ README.md
 smart_bottle/*
 !smart_bottle/Core/Src
 !smart_bottle/Core/Inc
+!smart_bottle/smart_bottle.ioc
 .metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
 *.snap
 *.xmi
@@ -15,7 +16,6 @@ smart_bottle/*
 smart_bottle/.cproject
 smart_bottle/.mxproject
 smart_bottle/.settings/language.settings.xml
-smart_bottle/Core/Src/stm32f4xx_it.c
 smart_bottle/Debug/Core/Src/main.o
 smart_bottle/Debug/Core/Src/main.su
 smart_bottle/Debug/Core/Src/stm32f4xx_it.o

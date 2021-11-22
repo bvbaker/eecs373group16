@@ -32,17 +32,23 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+// I2C Color Sensor Defines
 #define COLOR_I2C_ADDR 		(0x29 << 1)
 
-#define COLOR_ENABLE_SAD 	0x00
-#define COLOR_STATUS_SAD 	0x13
+#define COLOR_ENABLE_SAD 	(0x00)
+#define COLOR_STATUS_SAD 	(0x13)
 
-#define COLOR_COMMAND_BIT	0x80
+#define COLOR_COMMAND_BIT	(0x80)
 
-#define COLOR_DATA_C 		0x14
-#define COLOR_DATA_R		0x16
-#define COLOR_DATA_G		0x18
-#define COLOR_DATA_B		0x1A
+#define COLOR_DATA_C 		(0x14)
+#define COLOR_DATA_R		(0x16)
+#define COLOR_DATA_G		(0x18)
+#define COLOR_DATA_B		(0x1A)
+
+// I2C Display Defines
+#define DISPLAY_I2C_ADDR	(0x50)
+#define DISPLAY_WIDTH		(20)
 
 /* USER CODE END PD */
 
@@ -377,6 +383,48 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 
 	return (uint16_t) ((buffer[0] & 0xFF) | buffer[1] << 8);
 
+}
+
+void display_test(I2C_HandleTypeDef hi2c1) {
+	uint8_t buffer[DISPLAY_WIDTH];
+	char string[DISPLAY_WIDTH];
+	HAL_StatusTypeDef ret;
+
+	for (int i = 0; i < DISPLAY_WIDTH; i++) {
+		string[i] = 'a' + i;
+	}
+
+	string_to_uint8_t(string, buffer, DISPLAY_WIDTH);
+
+	// write data
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, DISPLAY_WIDTH, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+//	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, DISPLAY_WIDTH, HAL_MAX_DELAY);
+//	if ( ret != HAL_OK ) {
+//		while(1);
+//	}
+}
+
+void string_to_uint8_t(char* str, uint8_t* buff, int len) {
+	if (str == NULL) {
+		// invalid str array
+		while(1);
+		return;
+	}
+
+	if (buff == NULL) {
+		while(1);
+		return;
+	}
+
+	for (int i = 0; i < len; i++) {
+		buff[i] = (uint8_t)str[i];
+	}
+
+	return;
 }
 
 /* USER CODE END 1 */

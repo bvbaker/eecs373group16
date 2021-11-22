@@ -109,26 +109,36 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-  color_init(hi2c1);
+  display_test(hi2c1);
+
+  //color_init(hi2c1);
+
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint8_t r, g, b, c;
+  uint16_t r, g, b, c;
+  float r_percent, g_percent, b_percent, total_feedback;
 
 
   while (1)
   {
 
 	  r = color_read(hi2c1, 'r');
-	  HAL_Delay(1);
+	  HAL_Delay(100);
 	  g = color_read(hi2c1, 'g');
-	  HAL_Delay(1);
+	  HAL_Delay(100);
 	  b = color_read(hi2c1, 'b');
-	  HAL_Delay(1);
+	  HAL_Delay(100);
 	  c = color_read(hi2c1, 'c');
-	  HAL_Delay(1);
+	  HAL_Delay(100);
+
+	  total_feedback = r + g + b;
+	  r_percent = r / total_feedback * 100.0;
+	  g_percent = g / total_feedback * 100.0;
+	  b_percent = b / total_feedback * 100.0;
 
 	  color_off(hi2c1); // does not turn off the LED :(
 

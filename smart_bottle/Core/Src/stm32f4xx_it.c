@@ -225,6 +225,9 @@ void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 
+	// Up Button
+
+
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
@@ -238,6 +241,9 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
+
+	// Down Button
+
 
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
@@ -253,6 +259,10 @@ void EXTI3_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI3_IRQn 0 */
 
+	// Menu/Back Button
+
+
+
   /* USER CODE END EXTI3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
   /* USER CODE BEGIN EXTI3_IRQn 1 */
@@ -266,6 +276,9 @@ void EXTI3_IRQHandler(void)
 void EXTI4_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI4_IRQn 0 */
+
+	// OK Button
+
 
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
@@ -390,6 +403,8 @@ void display_test(I2C_HandleTypeDef hi2c1) {
 	char string[DISPLAY_WIDTH];
 	HAL_StatusTypeDef ret;
 
+	display_clear(hi2c1);
+
 	for (int i = 0; i < DISPLAY_WIDTH; i++) {
 		string[i] = 'a' + i;
 	}
@@ -397,15 +412,28 @@ void display_test(I2C_HandleTypeDef hi2c1) {
 	string_to_uint8_t(string, buffer, DISPLAY_WIDTH);
 
 	// write data
-	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, DISPLAY_WIDTH, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 10, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
+
+	HAL_Delay(1000);
+
+	display_clear(hi2c1);
 
 //	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, DISPLAY_WIDTH, HAL_MAX_DELAY);
 //	if ( ret != HAL_OK ) {
 //		while(1);
 //	}
+}
+
+void display_clear(I2C_HandleTypeDef hi2c1) {
+	uint8_t buffer[2] = {0xFE, 0x51};
+	HAL_StatusTypeDef ret;
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
 }
 
 void string_to_uint8_t(char* str, uint8_t* buff, int len) {

@@ -60,6 +60,7 @@ uint16_t extern color_read(I2C_HandleTypeDef hi2c1, char color);
 
 void extern display_test(I2C_HandleTypeDef hi2c1);
 void extern string_to_uint8_t(char* str, uint8_t* buff, int len);
+void extern display_clear(I2C_HandleTypeDef hi2c1);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

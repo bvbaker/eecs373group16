@@ -29,7 +29,10 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+struct MenuItem {
+	uint8_t valid;
+	char display[15];
+};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -81,6 +84,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t raw;    //12-bit ADC reading
 	char msg[10];    //buffer used to transmit over UART
+	menu_index = 0;
+	menu_mode = 1;
 
   /* USER CODE END 1 */
 
@@ -109,11 +114,27 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-  display_test(hi2c1);
+//  display_test(hi2c1);
 
-  //color_init(hi2c1);
+  color_init(hi2c1);
 
+  struct MenuItem main_menu[MAIN_MENU_SIZE] = {};
+  struct MenuItem next_item;
+  strcpy(next_item.display, "  --- N/A ---  ");
+  next_item.valid = 0;
 
+  for (int i = 0; i < MAIN_MENU_SIZE; i++) {
+	  switch (i) {
+	  case GUESS_LIQUID:
+		  strcpy(next_item.display, "guess contents ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+	  default:
+		  strcpy(next_item.display, "  --- N/A ---  ");
+		  next_item.valid = 0;
+		  main_menu[i] = next_item;
+	  }
+  }
 
   /* USER CODE END 2 */
 

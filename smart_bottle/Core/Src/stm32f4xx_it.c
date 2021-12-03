@@ -227,6 +227,11 @@ void EXTI0_IRQHandler(void)
 
 	// Up Button
 
+	if (menu_index > 0)
+		menu_index--;
+	else
+		menu_index = MAIN_MENU_SIZE - 1;
+
 
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
@@ -244,6 +249,10 @@ void EXTI1_IRQHandler(void)
 
 	// Down Button
 
+	if (menu_index < MAIN_MENU_SIZE - 1)
+		menu_index++;
+	else
+		menu_index = 0;
 
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
@@ -278,6 +287,17 @@ void EXTI4_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_IRQn 0 */
 
 	// OK Button
+	if (menu_mode) {
+		switch (menu_index) {
+		case 0:
+			// Guess Drink
+
+			;
+		case 1:
+
+			;
+		}
+	}
 
 
   /* USER CODE END EXTI4_IRQn 0 */

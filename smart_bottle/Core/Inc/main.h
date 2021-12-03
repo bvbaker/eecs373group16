@@ -38,6 +38,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -57,6 +58,9 @@ void Error_Handler(void);
 void extern color_init(I2C_HandleTypeDef hi2c1);
 void extern color_off(I2C_HandleTypeDef hi2c1);
 uint16_t extern color_read(I2C_HandleTypeDef hi2c1, char color);
+
+int menu_index;
+int menu_mode;
 
 void extern display_test(I2C_HandleTypeDef hi2c1);
 void extern string_to_uint8_t(char* str, uint8_t* buff, int len);
@@ -78,7 +82,17 @@ void extern display_clear(I2C_HandleTypeDef hi2c1);
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
+#define MAIN_MENU_SIZE 8
 
+// Main Menu Options
+#define GUESS_LIQUID 0
+#define	ADD_TO_TOTAL 1
+#define UPDATE_GOALS 2
+#define RESET_DAY 3
+#define CHECK_TIME 4
+#define CHECK_DAY 5
+#define CHECK_WEEK 6
+#define RESET_ALL 7
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

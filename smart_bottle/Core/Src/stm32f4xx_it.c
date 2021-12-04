@@ -227,11 +227,7 @@ void EXTI0_IRQHandler(void)
 
 	// Up Button
 
-	if (menu_index > 0)
-		menu_index--;
-	else
-		menu_index = MAIN_MENU_SIZE - 1;
-
+	up_pressed = 1;
 
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
@@ -249,10 +245,7 @@ void EXTI1_IRQHandler(void)
 
 	// Down Button
 
-	if (menu_index < MAIN_MENU_SIZE - 1)
-		menu_index++;
-	else
-		menu_index = 0;
+	down_pressed = 1;
 
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
@@ -270,7 +263,7 @@ void EXTI3_IRQHandler(void)
 
 	// Menu/Back Button
 
-	// Display Menu
+	menu_pressed = 1;
 
   /* USER CODE END EXTI3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
@@ -287,18 +280,8 @@ void EXTI4_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_IRQn 0 */
 
 	// OK Button
-	if (menu_mode) {
-		switch (menu_index) {
-		case 0:
-			// Guess Drink
 
-			;
-		case 1:
-
-			;
-		}
-	}
-
+	ok_pressed = 1;
 
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
@@ -323,7 +306,7 @@ void EXTI15_10_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
-void color_init(I2C_HandleTypeDef hi2c1) {
+void color_init() {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
@@ -346,7 +329,7 @@ void color_init(I2C_HandleTypeDef hi2c1) {
 	HAL_Delay(5);
 }
 
-void color_off(I2C_HandleTypeDef hi2c1) {
+void color_off() {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
@@ -358,7 +341,7 @@ void color_off(I2C_HandleTypeDef hi2c1) {
 	}
 }
 
-uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
+uint16_t color_read(char color) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
 
@@ -422,7 +405,7 @@ uint16_t color_read(I2C_HandleTypeDef hi2c1, char color) {
 
 }
 
-void display_test(I2C_HandleTypeDef hi2c1) {
+void display_test() {
 	uint8_t buffer[DISPLAY_WIDTH];
 	char string[DISPLAY_WIDTH];
 	HAL_StatusTypeDef ret;
@@ -492,8 +475,8 @@ void display_test(I2C_HandleTypeDef hi2c1) {
 //	}
 }
 
-void display_print_line(I2C_HandleTypeDef hi2c1, char* str, int len, int line) {
-	display_set_cursor_line(hi2c1, line);
+void display_print_line(char* str, int len, int line) {
+	display_set_cursor_line(line);
 
 	uint8_t buffer[DISPLAY_WIDTH];
 	HAL_StatusTypeDef ret;
@@ -509,7 +492,7 @@ void display_print_line(I2C_HandleTypeDef hi2c1, char* str, int len, int line) {
 }
 
 // line can be 0 to 3
-void display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line) {
+void display_set_cursor_line(int line) {
 	uint8_t buffer[3];
 	HAL_StatusTypeDef ret;
 
@@ -526,7 +509,7 @@ void display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line) {
 	HAL_Delay(5);
 }
 
-void display_clear(I2C_HandleTypeDef hi2c1) {
+void display_clear() {
 	uint8_t buffer[2] = {0xFE, 0x51};
 	HAL_StatusTypeDef ret;
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
@@ -534,6 +517,43 @@ void display_clear(I2C_HandleTypeDef hi2c1) {
 		while(1);
 	}
 	HAL_Delay(5); // clear takes 1.5ms
+}
+
+void display_on() {
+	uint8_t buffer[2] = {0xFE, 0x41};
+	HAL_StatusTypeDef ret;
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+	HAL_Delay(5);
+}
+
+void display_set_brightness(uint8_t brightness) {
+	uint8_t buffer[3] = {0xFE, 0x53, brightness};
+	HAL_StatusTypeDef ret;
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+	HAL_Delay(5);
+}
+
+void display_off() {
+	uint8_t buffer[2] = {0xFE, 0x42};
+	HAL_StatusTypeDef ret;
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+	HAL_Delay(5);
+}
+
+void display_init() {
+	  display_on();
+	  display_clear();
+	  display_set_brightness(0xFF / 3);
+	  display_print_line("Initializing...", 15, 0);
 }
 
 void string_to_uint8_t(char* str, uint8_t* buff, int len) {

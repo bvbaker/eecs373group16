@@ -37,13 +37,18 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+#define DISPLAY_WIDTH		(20)
 
+struct MenuItem {
+	uint8_t valid;
+	char display[DISPLAY_WIDTH - 1];
+};
 
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+I2C_HandleTypeDef extern hi2c1;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -55,18 +60,32 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-void extern color_init(I2C_HandleTypeDef hi2c1);
-void extern color_off(I2C_HandleTypeDef hi2c1);
-uint16_t extern color_read(I2C_HandleTypeDef hi2c1, char color);
+// Color Functions
+void extern color_init();
+void extern color_off();
+uint16_t extern color_read(char color);
 
-int menu_index;
-int menu_mode;
+// Button Variables (0 when not pressed, 1 when pressed and not handled)
+int extern up_pressed;
+int extern down_pressed;
+int extern menu_pressed;
+int extern ok_pressed;
 
-void extern display_test(I2C_HandleTypeDef hi2c1);
+// Display Functions
+void extern display_test();
 void extern string_to_uint8_t(char* str, uint8_t* buff, int len);
-void extern display_clear(I2C_HandleTypeDef hi2c1);
-void extern display_print_line(I2C_HandleTypeDef hi2c1, char* str, int len, int line);
-void extern display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line);
+void extern display_clear();
+void extern display_print_line(char* str, int len, int line);
+void extern display_set_cursor_line(int line);
+void extern display_on();
+void extern display_off();
+void extern display_set_brightness(uint8_t brightness);
+void extern display_init();
+
+// Menu Functions
+void extern menu();
+void extern display_menu(int menu_idx);
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -84,7 +103,8 @@ void extern display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line);
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-#define MAIN_MENU_SIZE 8
+#define MAIN_MENU_SIZE (8)
+#define NUM_DISPLAY_LINES (4)
 
 // Main Menu Options
 #define GUESS_LIQUID 0

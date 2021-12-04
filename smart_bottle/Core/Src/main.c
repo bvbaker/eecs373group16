@@ -29,10 +29,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-struct MenuItem {
-	uint8_t valid;
-	char display[15];
-};
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -55,7 +52,12 @@ SPI_HandleTypeDef hspi2;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+struct MenuItem main_menu[MAIN_MENU_SIZE];
 
+int up_pressed = 0;
+int down_pressed = 0;
+int menu_pressed = 0;
+int ok_pressed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -84,8 +86,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	uint16_t raw;    //12-bit ADC reading
 	char msg[10];    //buffer used to transmit over UART
-	menu_index = 0;
-	menu_mode = 1;
+
 
   /* USER CODE END 1 */
 
@@ -116,29 +117,9 @@ int main(void)
 
 //  display_test(hi2c1);
 
-  display_clear(hi2c1);
+  display_init();
 
-  display_print_line(hi2c1, "Initializing...", 15, 0);
-
-  color_init(hi2c1);
-
-  struct MenuItem main_menu[MAIN_MENU_SIZE] = {};
-  struct MenuItem next_item;
-  strcpy(next_item.display, "  --- N/A ---  ");
-  next_item.valid = 0;
-
-  for (int i = 0; i < MAIN_MENU_SIZE; i++) {
-	  switch (i) {
-	  case GUESS_LIQUID:
-		  strcpy(next_item.display, "guess contents ");
-		  next_item.valid = 1;
-		  main_menu[i] = next_item;
-	  default:
-		  strcpy(next_item.display, "  --- N/A ---  ");
-		  next_item.valid = 0;
-		  main_menu[i] = next_item;
-	  }
-  }
+  color_init();
 
   /* USER CODE END 2 */
 
@@ -150,14 +131,18 @@ int main(void)
 
   while (1)
   {
+	  if (menu_pressed) {
+		  menu_pressed = 0;
+		  menu_call();
+	  }
 
-	  r = color_read(hi2c1, 'r');
+	  r = color_read('r');
 	  HAL_Delay(100);
-	  g = color_read(hi2c1, 'g');
+	  g = color_read('g');
 	  HAL_Delay(100);
-	  b = color_read(hi2c1, 'b');
+	  b = color_read('b');
 	  HAL_Delay(100);
-	  c = color_read(hi2c1, 'c');
+	  c = color_read('c');
 	  HAL_Delay(100);
 
 	  total_feedback = r + g + b;
@@ -165,11 +150,11 @@ int main(void)
 	  g_percent = g / total_feedback * 100.0;
 	  b_percent = b / total_feedback * 100.0;
 
-	  color_off(hi2c1); // does not turn off the LED :(
+	  color_off(); // does not turn off the LED :(
 
 	  HAL_Delay(100);
 
-	  color_init(hi2c1);
+	  color_init();
 
 
 
@@ -502,6 +487,75 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+void menu_call() {
+	if (menu_pressed)
+		menu_pressed = 0;
+
+	int menu_idx = 0;
+	int menu_active = 1;
+
+	while (menu_active) {
+		menu_display(menu_idx);
+		if (up_pressed) {
+			up_pressed = 0;
+			if (menu_active > 0)
+				menu_idx--;
+			else
+				menu_idx = MAIN_MENU_SIZE - 1;
+		}
+		if (down_pressed) {
+			down_pressed = 0;
+			if (menu_active < MAIN_MENU_SIZE - 1)
+				menu_idx++;
+			else
+				menu_idx = 0;
+		}
+	}
+}
+
+void menu_init() {
+	// Initialize Menu Items
+	struct MenuItem next_item;
+	strcpy(next_item.display, "  --- N/A ---  ");
+	next_item.valid = 0;
+
+	for (int i = 0; i < MAIN_MENU_SIZE; i++) {
+	  switch (i) {
+	  case GUESS_LIQUID:
+		  strcpy(next_item.display, "guess contents ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+	  default:
+		  strcpy(next_item.display, "  --- N/A ---  ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+	  }
+	}
+}
+
+void menu_display(int menu_idx) {
+	display_clear();
+	char line_entry[DISPLAY_WIDTH];
+	int first_print_line = menu_idx - (menu_idx % NUM_DISPLAY_LINES);
+	for (int i = 0; i < NUM_DISPLAY_LINES; i++) {
+		if (first_print_line + i < MAIN_MENU_SIZE) {
+			if (main_menu[first_print_line + i].valid) {
+				for (int j = 0; j < DISPLAY_WIDTH; j++) {
+					if (j == 0) {
+						if (first_print_line + i == menu_idx) {
+							line_entry[j] = '>';
+						} else {
+							line_entry[j] = ' ';
+						}
+					} else {
+						line_entry[j] = main_menu[first_print_line + i].display[j - 1];
+					}
+				}
+				display_print_line(line_entry, DISPLAY_WIDTH, i);
+			}
+		}
+	}
+}
 /* USER CODE END 4 */
 
 /**

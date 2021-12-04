@@ -83,8 +83,9 @@ void extern display_set_brightness(uint8_t brightness);
 void extern display_init();
 
 // Menu Functions
-void extern menu();
-void extern display_menu(int menu_idx);
+void extern menu_call();
+void extern menu_init();
+void extern menu_display(int menu_idx);
 
 /* USER CODE END EFP */
 

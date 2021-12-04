@@ -553,7 +553,7 @@ void display_init() {
 	  display_on();
 	  display_clear();
 	  display_set_brightness(0xFF / 3);
-	  display_print_line("Initializing...", 15, 0);
+	  display_print_line("Initializing...", 15, 1);
 }
 
 void string_to_uint8_t(char* str, uint8_t* buff, int len) {

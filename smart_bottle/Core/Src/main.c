@@ -119,6 +119,8 @@ int main(void)
 
   display_init();
 
+  menu_init();
+
   color_init();
 
   /* USER CODE END 2 */
@@ -516,17 +518,17 @@ void menu_call() {
 void menu_init() {
 	// Initialize Menu Items
 	struct MenuItem next_item;
-	strcpy(next_item.display, "  --- N/A ---  ");
+	strcpy(next_item.display, "   --- N/A ---    ");
 	next_item.valid = 0;
 
 	for (int i = 0; i < MAIN_MENU_SIZE; i++) {
 	  switch (i) {
 	  case GUESS_LIQUID:
-		  strcpy(next_item.display, "guess contents ");
+		  strcpy(next_item.display, "guess contents    ");
 		  next_item.valid = 1;
 		  main_menu[i] = next_item;
 	  default:
-		  strcpy(next_item.display, "  --- N/A ---  ");
+		  strcpy(next_item.display, "   --- N/A ---    ");
 		  next_item.valid = 1;
 		  main_menu[i] = next_item;
 	  }

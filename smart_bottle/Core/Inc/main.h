@@ -65,6 +65,8 @@ int menu_mode;
 void extern display_test(I2C_HandleTypeDef hi2c1);
 void extern string_to_uint8_t(char* str, uint8_t* buff, int len);
 void extern display_clear(I2C_HandleTypeDef hi2c1);
+void extern display_print_line(I2C_HandleTypeDef hi2c1, char* str, int len, int line);
+void extern display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

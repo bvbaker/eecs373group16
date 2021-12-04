@@ -270,7 +270,7 @@ void EXTI3_IRQHandler(void)
 
 	// Menu/Back Button
 
-
+	// Display Menu
 
   /* USER CODE END EXTI3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
@@ -334,12 +334,16 @@ void color_init(I2C_HandleTypeDef hi2c1) {
 		while(1);
 	}
 
+	HAL_Delay(5);
+
 	buffer[0] = (1 << 7) | COLOR_ENABLE_SAD;
 	buffer[1] = 0b11; // AEN and PON
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (COLOR_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
+
+	HAL_Delay(5);
 }
 
 void color_off(I2C_HandleTypeDef hi2c1) {
@@ -425,26 +429,101 @@ void display_test(I2C_HandleTypeDef hi2c1) {
 
 	display_clear(hi2c1);
 
+
+
+	for (int i = 0; i < DISPLAY_WIDTH; i++) {
+//		string[i] = 'a' + i;
+		string[i] = 'a';
+	}
+
+//	string_to_uint8_t(string, buffer, DISPLAY_WIDTH);
+
+	// set cursor
+
+	buffer[0] = 0xFE;
+	buffer[1] = 0x45;
+	buffer[2] = 0;
+
+	// write data
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(5);
+
+	string_to_uint8_t("hello", buffer, 5);
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 5, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(5);
+
+	buffer[0] = 0xFE;
+	buffer[1] = 0x45;
+	buffer[2] = DISPLAY_WIDTH;
+
+	// write data
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(5);
+
+
 	for (int i = 0; i < DISPLAY_WIDTH; i++) {
 		string[i] = 'a' + i;
 	}
 
 	string_to_uint8_t(string, buffer, DISPLAY_WIDTH);
 
-	// write data
-	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 10, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 20, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
 
-	HAL_Delay(1000);
-
-	display_clear(hi2c1);
+	HAL_Delay(5);
 
 //	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, DISPLAY_WIDTH, HAL_MAX_DELAY);
 //	if ( ret != HAL_OK ) {
 //		while(1);
 //	}
+}
+
+void display_print_line(I2C_HandleTypeDef hi2c1, char* str, int len, int line) {
+	display_set_cursor_line(hi2c1, line);
+
+	uint8_t buffer[DISPLAY_WIDTH];
+	HAL_StatusTypeDef ret;
+
+	string_to_uint8_t(str, buffer, len);
+
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, len, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(5);
+}
+
+// line can be 0 to 3
+void display_set_cursor_line(I2C_HandleTypeDef hi2c1, int line) {
+	uint8_t buffer[3];
+	HAL_StatusTypeDef ret;
+
+	buffer[0] = 0xFE;
+	buffer[1] = 0x45;
+	buffer[2] = line * DISPLAY_WIDTH;
+
+	// write data
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(5);
 }
 
 void display_clear(I2C_HandleTypeDef hi2c1) {
@@ -454,6 +533,7 @@ void display_clear(I2C_HandleTypeDef hi2c1) {
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
+	HAL_Delay(5); // clear takes 1.5ms
 }
 
 void string_to_uint8_t(char* str, uint8_t* buff, int len) {

@@ -491,14 +491,31 @@ void display_print_line(char* str, int len, int line) {
 	HAL_Delay(5);
 }
 
-// line can be 0 to 3
+// line can be any number, will go to the modulo of that number
 void display_set_cursor_line(int line) {
 	uint8_t buffer[3];
 	HAL_StatusTypeDef ret;
 
 	buffer[0] = 0xFE;
 	buffer[1] = 0x45;
-	buffer[2] = line * DISPLAY_WIDTH;
+	switch (line % 4) {
+	case (0):
+		buffer[2] = 0x00;
+		break;
+	case (1):
+		buffer[2] = 0x40;
+		break;
+	case (2):
+		buffer[2] = 0x14;
+		break;
+	case (3):
+		buffer[2] = 0x54;
+		break;
+	default:
+		buffer[2] = 0x00;
+		break;
+	}
+
 
 	// write data
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
@@ -529,7 +546,10 @@ void display_on() {
 	HAL_Delay(5);
 }
 
-void display_set_brightness(uint8_t brightness) {
+void display_set_brightness(uint8_t brightness_in) {
+	uint8_t brightness = brightness_in;
+	if (8 < brightness)
+		brightness = 8;
 	uint8_t buffer[3] = {0xFE, 0x53, brightness};
 	HAL_StatusTypeDef ret;
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
@@ -539,21 +559,66 @@ void display_set_brightness(uint8_t brightness) {
 	HAL_Delay(5);
 }
 
-void display_off() {
-	uint8_t buffer[2] = {0xFE, 0x42};
+void display_set_contrast(uint8_t contrast_in) {
+	uint8_t brightness = contrast_in;
+	if (50 < brightness)
+		brightness = 50;
+	uint8_t buffer[3] = {0xFE, 0x52, brightness};
 	HAL_StatusTypeDef ret;
-	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
 	HAL_Delay(5);
 }
 
-void display_init() {
+void display_off() {
+
+	uint8_t buffer[3] = {0xFE, 0x53, 1};
+	HAL_StatusTypeDef ret;
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (DISPLAY_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+	HAL_Delay(5);
+}
+
+// timestring is length 5, datestring is length 8
+void time_make_string(char* timestring, char* datestring, RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
+	// Create Timestring
+	int temp = currTime.Hours;
+	timestring[0] = '0' + ((temp / 10) % 10);
+	timestring[1] = '0' + temp % 10;
+	timestring[2] = ':';
+	temp = currTime.Minutes;
+	timestring[3] = '0' + ((temp / 10) % 10);
+	timestring[4] = '0' + temp % 10;
+
+	// Create Datestring
+	temp = currDate.Month;
+	datestring[0] = '0' + ((temp / 10) % 10);
+	datestring[1] = '0' + temp % 10;
+	datestring[2] = '-';
+	temp = currDate.Date;
+	datestring[3] = '0' + ((temp / 10) % 10);
+	datestring[4] = '0' + temp % 10;
+	datestring[5] = '-';
+	temp = currDate.Year;
+	datestring[6] = '0' + ((temp / 10) % 10);
+	datestring[7] = '0' + temp % 10;
+}
+
+void display_init(RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
 	  display_on();
 	  display_clear();
-	  display_set_brightness(0xFF / 3);
-	  display_print_line("Initializing...", 15, 1);
+	  display_set_brightness(4);
+	  display_set_contrast(50);
+	  display_print_line("Initializing...", 15, 0);
+	  char datestring[8];
+	  char timestring[5];
+	  time_make_string(timestring, datestring, currTime, currDate);
+	  display_print_line(timestring, 5, 1);
+	  display_print_line(datestring, 8, 2);
 }
 
 void string_to_uint8_t(char* str, uint8_t* buff, int len) {
@@ -569,7 +634,10 @@ void string_to_uint8_t(char* str, uint8_t* buff, int len) {
 	}
 
 	for (int i = 0; i < len; i++) {
-		buff[i] = (uint8_t)str[i];
+		if (str[i] == 0)
+			buff[i] = (uint8_t)' ';
+		else
+			buff[i] = (uint8_t)str[i];
 	}
 
 	return;

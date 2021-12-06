@@ -79,8 +79,9 @@ void extern display_print_line(char* str, int len, int line);
 void extern display_set_cursor_line(int line);
 void extern display_on();
 void extern display_off();
-void extern display_set_brightness(uint8_t brightness);
+void extern display_set_brightness(uint8_t brightness_in);
 void extern display_init();
+void extern display_set_contrast(uint8_t contrast_in);
 
 // Menu Functions
 void extern menu_call();

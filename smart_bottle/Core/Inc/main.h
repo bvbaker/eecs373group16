@@ -44,11 +44,38 @@ struct MenuItem {
 	char display[DISPLAY_WIDTH - 1];
 };
 
+struct ColorType {
+	uint16_t r, g, b, c;
+};
+
+struct RelativeColorType {
+	float r_perc, g_perc, b_perc;
+};
+
+struct NutritionType {
+	float caffeine, sugar, sodium, calories, carbs, protein, fat;
+};
+
+struct DrinkType {
+	RelativeColorType max, min;
+	float serving_size;
+	struct NutritionType nutrition_per_serving;
+};
+
+struct DayType {
+	struct NutritionType nutrition_total;
+	int counted;
+};
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
 I2C_HandleTypeDef extern hi2c1;
+
+RTC_HandleTypeDef extern hrtc;
+
+struct DayType extern last_30_days[30];
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -60,16 +87,28 @@ I2C_HandleTypeDef extern hi2c1;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+
 // Color Functions
 void extern color_init();
 void extern color_off();
 uint16_t extern color_read(char color);
+struct ColorType extern color_read_rgbc();
+struct RelativeColorType extern color_read_percent();
+struct RelativeColorType extern color_abs_to_rel(struct ColorType color_in);
+void extern color_display_debug();
+void extern color_make_percent_line(char* buffer, float percent, char color);
+
+// Load Cell Functions
+void extern load_cell_init();
+int extern load_cell_read();
 
 // Button Variables (0 when not pressed, 1 when pressed and not handled)
 int extern up_pressed;
 int extern down_pressed;
 int extern menu_pressed;
 int extern ok_pressed;
+
+void extern reset_buttons();
 
 // Display Functions
 void extern display_test();
@@ -87,13 +126,13 @@ void extern display_set_contrast(uint8_t contrast_in);
 void extern menu_call();
 void extern menu_init();
 void extern menu_display(int menu_idx);
+void extern menu_select(int menu_idx);
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
 #define B1_Pin GPIO_PIN_13
 #define B1_GPIO_Port GPIOC
-#define B1_EXTI_IRQn EXTI15_10_IRQn
 #define USART_TX_Pin GPIO_PIN_2
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
@@ -110,7 +149,7 @@ void extern menu_display(int menu_idx);
 
 // Main Menu Options
 #define GUESS_LIQUID 0
-#define	ADD_TO_TOTAL 1
+#define	DISPLAY_COLOR 1
 #define UPDATE_GOALS 2
 #define RESET_DAY 3
 #define CHECK_TIME 4

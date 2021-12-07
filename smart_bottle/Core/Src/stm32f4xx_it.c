@@ -23,6 +23,8 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,6 +34,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+// Button Defines
+#define BUTTON_DELAY		(1000000)
 
 // I2C Color Sensor Defines
 #define COLOR_I2C_ADDR 		(0x29 << 1)
@@ -49,6 +54,12 @@
 // I2C Display Defines
 #define DISPLAY_I2C_ADDR	(0x50)
 #define DISPLAY_WIDTH		(20)
+
+// I2C Load Cell Defines
+#define LOAD_CELL_I2C_ADDR	(0x2A << 1)
+#define LOAD_CELL_PU_CTRL	(0x00)
+#define LOAD_CELL_ADC_REG	(0x12)
+#define LOAD_CELL_DATA_READY_MASK (1 << 5)
 
 /* USER CODE END PD */
 
@@ -226,6 +237,7 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 
 	// Up Button
+	for (volatile int i = 0; i < BUTTON_DELAY; i++);  // plz don't bounce
 
 	up_pressed = 1;
 
@@ -244,6 +256,7 @@ void EXTI1_IRQHandler(void)
   /* USER CODE BEGIN EXTI1_IRQn 0 */
 
 	// Down Button
+	for (volatile int i = 0; i < BUTTON_DELAY; i++);  // plz don't bounce
 
 	down_pressed = 1;
 
@@ -262,6 +275,7 @@ void EXTI3_IRQHandler(void)
   /* USER CODE BEGIN EXTI3_IRQn 0 */
 
 	// Menu/Back Button
+	for (volatile int i = 0; i < BUTTON_DELAY; i++);  // plz don't bounce
 
 	menu_pressed = 1;
 
@@ -280,6 +294,7 @@ void EXTI4_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_IRQn 0 */
 
 	// OK Button
+	for (volatile int i = 0; i < BUTTON_DELAY; i++);  // plz don't bounce
 
 	ok_pressed = 1;
 
@@ -290,21 +305,14 @@ void EXTI4_IRQHandler(void)
   /* USER CODE END EXTI4_IRQn 1 */
 }
 
-/**
-  * @brief This function handles EXTI line[15:10] interrupts.
-  */
-void EXTI15_10_IRQHandler(void)
-{
-  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
-
-  /* USER CODE END EXTI15_10_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
-  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
-  /* USER CODE END EXTI15_10_IRQn 1 */
-}
-
 /* USER CODE BEGIN 1 */
+
+void reset_buttons() {
+	  menu_pressed = 0;
+	  ok_pressed = 0;
+	  up_pressed = 0;
+	  down_pressed = 0;
+}
 
 void color_init() {
 	uint8_t buffer[2];
@@ -327,6 +335,83 @@ void color_init() {
 	}
 
 	HAL_Delay(5);
+}
+
+void clear_string(char* buffer, int size) {
+	buffer = memset(buffer, 0, size);
+}
+
+void color_make_percent_line(char* buffer, float percent, char color) {
+	clear_string(buffer, DISPLAY_WIDTH);
+	switch (color) {
+	case ('r'):
+		sprintf(buffer, "RED   : %5.2f%%", percent);
+		break;
+	case ('g'):
+		sprintf(buffer, "GREEN : %5.2f%%", percent);
+		break;
+	case ('b'):
+		sprintf(buffer, "BLUE  : %5.2f%%", percent);
+		break;
+	default:
+		strcpy(buffer, "OH WHOA WHOOPS");
+		break;
+	}
+
+	return;
+}
+
+void color_display_debug() {
+	struct RelativeColorType color_in_percent = color_read_percent();
+	char buffer[DISPLAY_WIDTH];
+
+	while (!menu_pressed && !ok_pressed) {
+		color_in_percent = color_read_percent();
+		display_clear();
+		display_print_line("Color Readings:", strlen("Color Readings:"), 0);
+		// display r, g, b percentages
+		color_make_percent_line(buffer, color_in_percent.r_perc, 'r');
+		display_print_line(buffer, DISPLAY_WIDTH, 1);
+		color_make_percent_line(buffer, color_in_percent.g_perc, 'g');
+		display_print_line(buffer, DISPLAY_WIDTH, 2);
+		color_make_percent_line(buffer, color_in_percent.b_perc, 'b');
+		display_print_line(buffer, DISPLAY_WIDTH, 3);
+
+		HAL_Delay(1000);
+
+	}
+
+	reset_buttons();
+
+}
+
+struct RelativeColorType color_read_percent() {
+	struct RelativeColorType color_in_percent;
+	struct ColorType color_in = color_read_rgbc();
+
+	color_in_percent = color_abs_to_rel(color_in);
+
+	return color_in_percent;
+}
+
+struct RelativeColorType color_abs_to_rel(struct ColorType color_in) {
+	struct RelativeColorType color_in_percent;
+	int total_feedback = color_in.r + color_in.g + color_in.b;
+	color_in_percent.r_perc = color_in.r / (float)total_feedback * 100.0;
+	color_in_percent.g_perc = color_in.g / (float)total_feedback * 100.0;
+	color_in_percent.b_perc = color_in.b / (float)total_feedback * 100.0;
+
+	return color_in_percent;
+}
+
+struct ColorType color_read_rgbc() {
+	struct ColorType color_in;
+	color_in.r = color_read('r');
+	color_in.g = color_read('g');
+	color_in.b = color_read('b');
+	color_in.c = color_read('c');
+
+	return color_in;
 }
 
 void color_off() {
@@ -403,6 +488,62 @@ uint16_t color_read(char color) {
 
 	return (uint16_t) ((buffer[0] & 0xFF) | buffer[1] << 8);
 
+}
+
+void load_cell_init() {
+	uint8_t buffer[3] = {0,0,0};
+	HAL_StatusTypeDef ret;
+
+	// first, check valid, and don't stop asking until we get a valid response
+
+	buffer[0] = LOAD_CELL_PU_CTRL;
+	buffer[1] = 0b00010110; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+}
+
+int load_cell_read() {
+	uint8_t buffer[3] = {0,0,0};
+	HAL_StatusTypeDef ret;
+
+	// first, check valid, and don't stop asking until we get a valid response
+	while (!buffer[0]) {
+		buffer[0] = LOAD_CELL_PU_CTRL;
+
+		// read status reg
+		ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+		if ( ret != HAL_OK ) {
+			while(1);
+		}
+
+		ret = HAL_I2C_Master_Receive(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+
+		if ( ret != HAL_OK ) {
+			while(1);
+		}
+
+
+		buffer[0] &= LOAD_CELL_DATA_READY_MASK; // check the 5th bit for adc valid
+	}
+
+	buffer[0] = LOAD_CELL_ADC_REG;
+
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	ret = HAL_I2C_Master_Receive(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	int result = (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
+	return result;
 }
 
 void display_test() {
@@ -608,14 +749,20 @@ void time_make_string(char* timestring, char* datestring, RTC_TimeTypeDef currTi
 	datestring[7] = '0' + temp % 10;
 }
 
-void display_init(RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
+void display_init() {
 	  display_on();
 	  display_clear();
 	  display_set_brightness(4);
 	  display_set_contrast(50);
 	  display_print_line("Initializing...", 15, 0);
+
 	  char datestring[8];
 	  char timestring[5];
+	  RTC_TimeTypeDef currTime = {0};
+	  RTC_DateTypeDef currDate = {0};
+	  HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	  HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
 	  time_make_string(timestring, datestring, currTime, currDate);
 	  display_print_line(timestring, 5, 1);
 	  display_print_line(datestring, 8, 2);

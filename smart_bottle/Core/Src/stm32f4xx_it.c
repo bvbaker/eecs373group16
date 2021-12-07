@@ -307,6 +307,13 @@ void EXTI4_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
+void reset_buttons() {
+	  menu_pressed = 0;
+	  ok_pressed = 0;
+	  up_pressed = 0;
+	  down_pressed = 0;
+}
+
 void color_init() {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
@@ -336,14 +343,9 @@ void clear_string(char* buffer, int size) {
 
 void color_make_percent_line(char* buffer, float percent, char color) {
 	clear_string(buffer, DISPLAY_WIDTH);
-	char num_str[5];
 	switch (color) {
 	case ('r'):
 		sprintf(buffer, "RED   : %5.2f%%", percent);
-//		strcpy(buffer, "RED   :");
-//		gcvt(percent, 4, num_str);
-//		strcat(buffer, num_str);
-//		strcat(buffer, "%");
 		break;
 	case ('g'):
 		sprintf(buffer, "GREEN : %5.2f%%", percent);
@@ -364,6 +366,7 @@ void color_display_debug() {
 	char buffer[DISPLAY_WIDTH];
 
 	while (!menu_pressed && !ok_pressed) {
+		color_in_percent = color_read_percent();
 		display_clear();
 		display_print_line("Color Readings:", strlen("Color Readings:"), 0);
 		// display r, g, b percentages
@@ -378,8 +381,7 @@ void color_display_debug() {
 
 	}
 
-	menu_pressed = 0;
-	ok_pressed = 0;
+	reset_buttons();
 
 }
 
@@ -395,9 +397,9 @@ struct RelativeColorType color_read_percent() {
 struct RelativeColorType color_abs_to_rel(struct ColorType color_in) {
 	struct RelativeColorType color_in_percent;
 	int total_feedback = color_in.r + color_in.g + color_in.b;
-	color_in_percent.r_perc = color_in.r / total_feedback * 100.0;
-	color_in_percent.g_perc = color_in.g / total_feedback * 100.0;
-	color_in_percent.b_perc = color_in.b / total_feedback * 100.0;
+	color_in_percent.r_perc = color_in.r / (float)total_feedback * 100.0;
+	color_in_percent.g_perc = color_in.g / (float)total_feedback * 100.0;
+	color_in_percent.b_perc = color_in.b / (float)total_feedback * 100.0;
 
 	return color_in_percent;
 }

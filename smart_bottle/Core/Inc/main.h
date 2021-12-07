@@ -70,6 +70,7 @@ RTC_HandleTypeDef extern hrtc;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+
 // Color Functions
 void extern color_init();
 void extern color_off();
@@ -89,6 +90,8 @@ int extern up_pressed;
 int extern down_pressed;
 int extern menu_pressed;
 int extern ok_pressed;
+
+void extern reset_buttons();
 
 // Display Functions
 void extern display_test();

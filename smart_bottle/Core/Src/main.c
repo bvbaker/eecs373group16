@@ -150,8 +150,9 @@ int main(void)
   while (1)
   {
 	  if (menu_pressed) {
-		  menu_pressed = 0;
+		  reset_buttons();
 		  menu_call();
+		  reset_buttons();
 	  }
 
 //	  r = color_read('r');
@@ -579,7 +580,7 @@ void menu_call() {
 			menu_display(menu_idx);
 
 		if (ok_pressed) {
-			ok_pressed = 0;
+			reset_buttons();
 			menu_select(menu_idx);
 			display_clear();
 			display_off();
@@ -601,7 +602,6 @@ void menu_call() {
 				menu_idx = MAIN_MENU_SIZE - 1;
 			up_pressed = 0;
 		}
-
  	}
 
 	display_off();

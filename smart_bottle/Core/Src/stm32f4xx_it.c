@@ -341,20 +341,6 @@ void color_off() {
 	}
 }
 
-struct RelativeColorType color_read_perc() {
-	struct RelativeColorType rel_col;
-	struct ColorType col = color_read();
-}
-
-struct ColorType color_read_rgbc() {
-	struct ColorType col;
-	col.r = color_read('r');
-	col.g = color_read('g');
-	col.b = color_read('b');
-	col.c = color_read('c');
-	return col;
-}
-
 uint16_t color_read(char color) {
 	uint8_t buffer[2];
 	HAL_StatusTypeDef ret;
@@ -377,7 +363,6 @@ uint16_t color_read(char color) {
 			while(1);
 		}
 
-		HAL_Delay(5);
 
 		buffer[0] &= 0x01; // check the first bit for rgbc valid
 	}
@@ -415,8 +400,6 @@ uint16_t color_read(char color) {
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
-
-	HAL_Delay(5);
 
 	return (uint16_t) ((buffer[0] & 0xFF) | buffer[1] << 8);
 
@@ -490,20 +473,6 @@ void display_test() {
 //	if ( ret != HAL_OK ) {
 //		while(1);
 //	}
-}
-
-void display_color_debug() {
-	struct ColorType col = color_read_rgbc();
-
-	char red_line[14], green_line[20], blue_line[20];
-
-	strcpy(red_line, "RED   : ");//__.__%");
-	strcpy(red_line, "GREEN : ");//__.__%");
-	strcpy(red_line, "BLUE  : ");//__.__%");
-
-	display_print_line("Relative Color:", 15, 0);
-
-//	display_print_line();
 }
 
 void display_print_line(char* str, int len, int line) {

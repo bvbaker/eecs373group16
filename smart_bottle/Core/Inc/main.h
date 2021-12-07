@@ -78,6 +78,9 @@ struct ColorType extern color_read_rgbc();
 struct RelativeColorType extern color_read_percent();
 struct RelativeColorType extern color_abs_to_rel(struct ColorType color_in);
 
+// Load Cell Functions
+void extern load_cell_init();
+int extern load_cell_read();
 
 // Button Variables (0 when not pressed, 1 when pressed and not handled)
 int extern up_pressed;

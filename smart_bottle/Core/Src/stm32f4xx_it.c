@@ -53,6 +53,12 @@
 #define DISPLAY_I2C_ADDR	(0x50)
 #define DISPLAY_WIDTH		(20)
 
+// I2C Load Cell Defines
+#define LOAD_CELL_I2C_ADDR	(0x2A << 1)
+#define LOAD_CELL_PU_CTRL	(0x00)
+#define LOAD_CELL_ADC_REG	(0x12)
+#define LOAD_CELL_DATA_READY_MASK (1 << 5)
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -439,6 +445,62 @@ uint16_t color_read(char color) {
 
 	return (uint16_t) ((buffer[0] & 0xFF) | buffer[1] << 8);
 
+}
+
+void load_cell_init() {
+	uint8_t buffer[3] = {0,0,0};
+	HAL_StatusTypeDef ret;
+
+	// first, check valid, and don't stop asking until we get a valid response
+
+	buffer[0] = LOAD_CELL_PU_CTRL;
+	buffer[1] = 0b00010110; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+}
+
+int load_cell_read() {
+	uint8_t buffer[3] = {0,0,0};
+	HAL_StatusTypeDef ret;
+
+	// first, check valid, and don't stop asking until we get a valid response
+	while (!buffer[0]) {
+		buffer[0] = LOAD_CELL_PU_CTRL;
+
+		// read status reg
+		ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+		if ( ret != HAL_OK ) {
+			while(1);
+		}
+
+		ret = HAL_I2C_Master_Receive(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+
+		if ( ret != HAL_OK ) {
+			while(1);
+		}
+
+
+		buffer[0] &= LOAD_CELL_DATA_READY_MASK; // check the 5th bit for adc valid
+	}
+
+	buffer[0] = LOAD_CELL_ADC_REG;
+
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 1, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	ret = HAL_I2C_Master_Receive(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 3, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	int result = (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
+	return result;
 }
 
 void display_test() {

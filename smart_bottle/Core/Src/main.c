@@ -127,6 +127,13 @@ int main(void)
 
 //  display_test(hi2c1);
 
+  load_cell_init();
+
+  int raw_lcr;
+
+  while(1)
+	  raw_lcr = load_cell_read();
+
   display_init();
 
   menu_init();

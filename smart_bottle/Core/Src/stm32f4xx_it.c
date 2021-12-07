@@ -33,6 +33,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+// Button Defines
+#define BUTTON_DELAY		(20)
+
 // I2C Color Sensor Defines
 #define COLOR_I2C_ADDR 		(0x29 << 1)
 
@@ -226,6 +229,7 @@ void EXTI0_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_IRQn 0 */
 
 	// Up Button
+	HAL_Delay(BUTTON_DELAY);  // plz don't bounce
 
 	up_pressed = 1;
 
@@ -244,6 +248,7 @@ void EXTI1_IRQHandler(void)
   /* USER CODE BEGIN EXTI1_IRQn 0 */
 
 	// Down Button
+	HAL_Delay(BUTTON_DELAY);  // plz don't bounce
 
 	down_pressed = 1;
 
@@ -262,6 +267,7 @@ void EXTI3_IRQHandler(void)
   /* USER CODE BEGIN EXTI3_IRQn 0 */
 
 	// Menu/Back Button
+	HAL_Delay(BUTTON_DELAY);  // plz don't bounce
 
 	menu_pressed = 1;
 
@@ -280,6 +286,7 @@ void EXTI4_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_IRQn 0 */
 
 	// OK Button
+	HAL_Delay(BUTTON_DELAY);  // plz don't bounce
 
 	ok_pressed = 1;
 
@@ -327,6 +334,35 @@ void color_init() {
 	}
 
 	HAL_Delay(5);
+}
+
+struct RelativeColorType color_read_percent() {
+	struct RelativeColorType color_in_percent;
+	struct ColorType color_in = color_read_rgbc();
+
+	color_in_percent = color_abs_to_rel(color_in);
+
+	return color_in_percent;
+}
+
+struct RelativeColorType color_abs_to_rel(struct ColorType color_in) {
+	struct RelativeColorType color_in_percent;
+	int total_feedback = color_in.r + color_in.g + color_in.b;
+	color_in_percent.r_perc = color_in.r / total_feedback * 100.0;
+	color_in_percent.g_perc = color_in.g / total_feedback * 100.0;
+	color_in_percent.b_perc = color_in.b / total_feedback * 100.0;
+
+	return color_in_percent;
+}
+
+struct ColorType color_read_rgbc() {
+	struct ColorType color_in;
+	color_in.r = color_read('r');
+	color_in.g = color_read('g');
+	color_in.b = color_read('b');
+	color_in.c = color_read('c');
+
+	return color_in;
 }
 
 void color_off() {
@@ -608,14 +644,20 @@ void time_make_string(char* timestring, char* datestring, RTC_TimeTypeDef currTi
 	datestring[7] = '0' + temp % 10;
 }
 
-void display_init(RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
+void display_init() {
 	  display_on();
 	  display_clear();
 	  display_set_brightness(4);
 	  display_set_contrast(50);
 	  display_print_line("Initializing...", 15, 0);
+
 	  char datestring[8];
 	  char timestring[5];
+	  RTC_TimeTypeDef currTime = {0};
+	  RTC_DateTypeDef currDate = {0};
+	  HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	  HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
 	  time_make_string(timestring, datestring, currTime, currDate);
 	  display_print_line(timestring, 5, 1);
 	  display_print_line(datestring, 8, 2);

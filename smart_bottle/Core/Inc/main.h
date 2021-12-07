@@ -44,11 +44,21 @@ struct MenuItem {
 	char display[DISPLAY_WIDTH - 1];
 };
 
+struct ColorType {
+	uint16_t r, g, b, c;
+};
+
+struct RelativeColorType {
+	float r_perc, g_perc, b_perc;
+};
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
 I2C_HandleTypeDef extern hi2c1;
+
+RTC_HandleTypeDef extern hrtc;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -64,6 +74,10 @@ void Error_Handler(void);
 void extern color_init();
 void extern color_off();
 uint16_t extern color_read(char color);
+struct ColorType extern color_read_rgbc();
+struct RelativeColorType extern color_read_percent();
+struct RelativeColorType extern color_abs_to_rel(struct ColorType color_in);
+
 
 // Button Variables (0 when not pressed, 1 when pressed and not handled)
 int extern up_pressed;

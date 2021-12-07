@@ -87,8 +87,8 @@ static void MX_RTC_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint16_t raw;    //12-bit ADC reading
-	char msg[10];    //buffer used to transmit over UART
+//	uint16_t raw;    //12-bit ADC reading
+//	char msg[10];    //buffer used to transmit over UART
 
 
   /* USER CODE END 1 */
@@ -119,15 +119,15 @@ int main(void)
   MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
-    RTC_TimeTypeDef currTime = {0};
-	RTC_DateTypeDef currDate = {0};
-
-	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+//    RTC_TimeTypeDef currTime = {0};
+//	RTC_DateTypeDef currDate = {0};
+//
+//	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+//	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 
 //  display_test(hi2c1);
 
-  display_init(currTime, currDate);
+  display_init();
 
   menu_init();
 
@@ -137,8 +137,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint16_t r, g, b, c;
-  float r_percent, g_percent, b_percent, total_feedback;
+//  uint16_t r, g, b, c;
+//  float r_percent, g_percent, b_percent, total_feedback;
 
 
   HAL_Delay(1000);
@@ -152,25 +152,25 @@ int main(void)
 		  menu_call();
 	  }
 
-	  r = color_read('r');
-	  HAL_Delay(100);
-	  g = color_read('g');
-	  HAL_Delay(100);
-	  b = color_read('b');
-	  HAL_Delay(100);
-	  c = color_read('c');
-	  HAL_Delay(100);
+//	  r = color_read('r');
+//	  HAL_Delay(100);
+//	  g = color_read('g');
+//	  HAL_Delay(100);
+//	  b = color_read('b');
+//	  HAL_Delay(100);
+//	  c = color_read('c');
+//	  HAL_Delay(100);
 
-	  total_feedback = r + g + b;
-	  r_percent = r / total_feedback * 100.0;
-	  g_percent = g / total_feedback * 100.0;
-	  b_percent = b / total_feedback * 100.0;
+//	  total_feedback = r + g + b;
+//	  r_percent = r / total_feedback * 100.0;
+//	  g_percent = g / total_feedback * 100.0;
+//	  b_percent = b / total_feedback * 100.0;
 
-	  color_off(); // does not turn off the LED :(
-
-	  HAL_Delay(100);
-
-	  color_init();
+//	  color_off(); // does not turn off the LED :(
+//
+//	  HAL_Delay(100);
+//
+//	  color_init();
 
 
 

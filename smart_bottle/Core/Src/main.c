@@ -127,12 +127,7 @@ int main(void)
 
 //  display_test(hi2c1);
 
-  load_cell_init();
-
-  int raw_lcr;
-
-  while(1)
-	  raw_lcr = load_cell_read();
+//  load_cell_init();
 
   display_init();
 
@@ -554,20 +549,17 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 1);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 
@@ -586,6 +578,14 @@ void menu_call() {
 		if (last_menu_idx != menu_idx)
 			menu_display(menu_idx);
 
+		if (ok_pressed) {
+			ok_pressed = 0;
+			menu_select(menu_idx);
+			display_clear();
+			display_off();
+			return;
+		}
+
 		last_menu_idx = menu_idx;
 		if (down_pressed) {
 			if (menu_idx < MAIN_MENU_SIZE - 1)
@@ -601,9 +601,24 @@ void menu_call() {
 				menu_idx = MAIN_MENU_SIZE - 1;
 			up_pressed = 0;
 		}
+
  	}
 
 	display_off();
+}
+
+void menu_select(int menu_idx) {
+	switch (menu_idx) {
+	case (GUESS_LIQUID):
+			break;
+	case (DISPLAY_COLOR):
+			color_display_debug();
+			break;
+	default:
+		display_print_line("INVALID SELECTION", strlen("INVALID SELECTION"), 0);
+		HAL_Delay(5000);
+		break;
+	}
 }
 
 void menu_init() {
@@ -615,8 +630,13 @@ void menu_init() {
 	for (int i = 0; i < MAIN_MENU_SIZE; i++) {
 	  switch (i) {
 	  case (GUESS_LIQUID):
-		  strcpy(next_item.display, "guess contents    ");
+		  strcpy(next_item.display, " Guess Contents   ");
 		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	  case (DISPLAY_COLOR):
+		  strcpy(next_item.display, " Display Color    ");
+	  	  next_item.valid = 1;
 		  main_menu[i] = next_item;
 		  break;
 	  default:

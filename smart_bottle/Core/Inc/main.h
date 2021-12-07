@@ -52,6 +52,21 @@ struct RelativeColorType {
 	float r_perc, g_perc, b_perc;
 };
 
+struct NutritionType {
+	float caffeine, sugar, sodium, calories, carbs, protein, fat;
+};
+
+struct DrinkType {
+	RelativeColorType max, min;
+	float serving_size;
+	struct NutritionType nutrition_per_serving;
+};
+
+struct DayType {
+	struct NutritionType nutrition_total;
+	int counted;
+};
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -59,6 +74,8 @@ struct RelativeColorType {
 I2C_HandleTypeDef extern hi2c1;
 
 RTC_HandleTypeDef extern hrtc;
+
+struct DayType extern last_30_days[30];
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

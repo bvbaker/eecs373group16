@@ -55,7 +55,7 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 struct MenuItem main_menu[MAIN_MENU_SIZE];
-struct DayType last_30_days[30];
+struct WeekType this_week;
 
 int up_pressed = 0;
 int down_pressed = 0;
@@ -129,8 +129,9 @@ int main(void)
 //  display_test(hi2c1);
 
 //  load_cell_init();
-  for (int i = 0; i < 30; i++) { // initialize last 30 days
-	  last_30_days[i] = counted = 0; // make a queue?
+  for (int i = 0; i < 7; i++) { // initialize last 30 days
+//	  this_week[i].counted = 0; // make a queue?
+
   }
 
   display_init();
@@ -608,6 +609,7 @@ void menu_call() {
 void menu_select(int menu_idx) {
 	switch (menu_idx) {
 	case (GUESS_LIQUID):
+			guess_liquid();
 			break;
 	case (DISPLAY_COLOR):
 			color_display_debug();

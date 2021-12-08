@@ -53,18 +53,25 @@ struct RelativeColorType {
 };
 
 struct NutritionType {
-	float caffeine, sugar, sodium, calories, carbs, protein, fat;
+	float caffeine_mg, sugar_g, sodium_mg, calories, carbs_g, protein_g, fat_g;
 };
 
 struct DrinkType {
-	RelativeColorType max, min;
-	float serving_size;
+	struct RelativeColorType max, min;
+	float serving_size_ml;
 	struct NutritionType nutrition_per_serving;
+	char name[20];
+	int already_guessed;
 };
 
 struct DayType {
 	struct NutritionType nutrition_total;
+	RTC_DateTypeDef date;
 	int counted;
+};
+
+struct WeekType {
+	struct DayType day[7];
 };
 
 /* USER CODE END ET */
@@ -73,9 +80,12 @@ struct DayType {
 /* USER CODE BEGIN EC */
 I2C_HandleTypeDef extern hi2c1;
 
+ADC_HandleTypeDef extern hadc1;
+
 RTC_HandleTypeDef extern hrtc;
 
-struct DayType extern last_30_days[30];
+struct WeekType extern this_week;
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -128,6 +138,16 @@ void extern menu_init();
 void extern menu_display(int menu_idx);
 void extern menu_select(int menu_idx);
 
+// Guess Functions
+void extern guess_liquid();
+int extern guess_within_range(struct DrinkType drink, struct RelativeColorType measured);
+int extern display_guess(struct DrinkType guessed_drink);
+
+// Height Functions
+//void extern height_init();
+float extern height_read_raw();
+float extern height_read_cm();
+
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -156,6 +176,15 @@ void extern menu_select(int menu_idx);
 #define CHECK_DAY 5
 #define CHECK_WEEK 6
 #define RESET_ALL 7
+
+// Guess Defines
+#define NUM_COLOR_SAMPLES (10)
+#define NUM_DRINKS (2)
+#define MTN_DEW_REGULAR (0)
+#define MTN_DEW_CODE_RED (1)
+#define DRINK_NONE (NUM_DRINKS)
+#define DRINK_UNKNOWN (NUM_DRINKS + 1)
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

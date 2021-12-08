@@ -337,6 +337,120 @@ void color_init() {
 	HAL_Delay(5);
 }
 
+void guess_liquid() {
+	struct DrinkType all_drinks[NUM_DRINKS + 2]; // +2 for none and unknown
+	struct DrinkType MtnDewRegular;
+	// color reading range
+	MtnDewRegular.max.r_perc = 28.5;
+	MtnDewRegular.max.g_perc = 42.0;
+	MtnDewRegular.max.b_perc = 35.0;
+
+	MtnDewRegular.min.r_perc = 26.0;
+	MtnDewRegular.min.g_perc = 38.0;
+	MtnDewRegular.min.b_perc = 31.0;
+
+	// nutrition data
+	MtnDewRegular.serving_size_ml = 591.0;
+	MtnDewRegular.nutrition_per_serving.caffeine_mg = 91.0;
+	MtnDewRegular.nutrition_per_serving.sugar_g = 77.0;
+	MtnDewRegular.nutrition_per_serving.sodium_mg = 105.0;
+	MtnDewRegular.nutrition_per_serving.calories = 290.0;
+	MtnDewRegular.nutrition_per_serving.carbs_g = 77.0;
+	MtnDewRegular.nutrition_per_serving.protein_g = 0.0;
+	MtnDewRegular.nutrition_per_serving.fat_g = 0.0;
+
+	MtnDewRegular.already_guessed = 0;
+
+	strcpy(MtnDewRegular.name, "Mountain Dew");
+
+	all_drinks[MTN_DEW_REGULAR] = MtnDewRegular;
+
+	struct DrinkType MtnDewCodeRed;
+
+	// color reading range
+	MtnDewCodeRed.max.r_perc = 30.5;
+	MtnDewCodeRed.max.g_perc = 37.0;
+	MtnDewCodeRed.max.b_perc = 37.0;
+
+	MtnDewCodeRed.min.r_perc = 27.5;
+	MtnDewCodeRed.min.g_perc = 34.0;
+	MtnDewCodeRed.min.b_perc = 34.0;
+
+	// nutrition data
+	MtnDewCodeRed.serving_size_ml = 591.0;
+	MtnDewCodeRed.nutrition_per_serving.caffeine_mg = 77.0;
+	MtnDewCodeRed.nutrition_per_serving.sugar_g = 76.0;
+	MtnDewCodeRed.nutrition_per_serving.sodium_mg = 180.0;
+	MtnDewCodeRed.nutrition_per_serving.calories = 280.0;
+	MtnDewCodeRed.nutrition_per_serving.carbs_g = 76.0;
+	MtnDewCodeRed.nutrition_per_serving.protein_g = 0.0;
+	MtnDewCodeRed.nutrition_per_serving.fat_g = 0.0;
+
+	strcpy(MtnDewCodeRed.name, "Mtn Dew Code Red");
+
+	MtnDewCodeRed.already_guessed = 0;
+
+	all_drinks[MTN_DEW_CODE_RED] = MtnDewCodeRed;
+
+	struct DrinkType None;
+	struct DrinkType Unknown;
+
+	struct RelativeColorType color_in, average;
+	average.r_perc = 0.0;
+	average.g_perc = 0.0;
+	average.b_perc = 0.0;
+
+	for (int i = 0; i < NUM_COLOR_SAMPLES; i++) {
+		color_in = color_read_percent();
+		average.r_perc += color_in.r_perc / (float)NUM_COLOR_SAMPLES;
+		average.g_perc += color_in.g_perc / (float)NUM_COLOR_SAMPLES;
+		average.b_perc += color_in.b_perc / (float)NUM_COLOR_SAMPLES;
+	}
+
+	// go for positive ID
+
+	for (int i = 0; i < NUM_DRINKS + 2; i++) {
+		if (guess_within_range(all_drinks[i], average)) {
+			all_drinks[i].already_guessed = 1;
+			if (display_guess(all_drinks[i])) {
+				// measure and add to daily totals
+				return;
+			}
+		}
+	}
+
+	// grasp for straws
+
+
+}
+
+int guess_within_range(struct DrinkType drink, struct RelativeColorType measured) {
+	if (drink.min.r_perc < measured.r_perc && measured.r_perc < drink.max.r_perc)
+		if (drink.min.g_perc < measured.g_perc && measured.g_perc < drink.max.g_perc)
+			if (drink.min.b_perc < measured.b_perc && measured.b_perc < drink.max.b_perc)
+				return 1;
+	return 0;
+}
+
+// Returns 1 if the guess was correct and 0 if not
+int display_guess(struct DrinkType guessed_drink) {
+	reset_buttons();
+	display_clear();
+
+	char buffer[20];
+	display_print_line("Is this your drink?", strlen("Is this your drink?"), 0);
+	strcpy(buffer, "> ");
+	strcat(buffer, guessed_drink.name);
+	display_print_line(buffer, strlen(buffer), 2);
+	while (1) {
+		if (menu_pressed) {
+			return 0;
+		} else if (ok_pressed) {
+			return 1;
+		}
+	}
+}
+
 void clear_string(char* buffer, int size) {
 	buffer = memset(buffer, 0, size);
 }
@@ -544,6 +658,25 @@ int load_cell_read() {
 
 	int result = (buffer[0] << 16) | (buffer[1] << 8) | buffer[2];
 	return result;
+}
+
+//void height_init() {
+//    HAL_ADC_Start(&hadc1);
+//    HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+//}
+
+float height_read_raw() {
+	HAL_ADC_Start(&hadc1);
+	HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+	float raw = (float)HAL_ADC_GetValue(&hadc1);
+	return raw;
+}
+
+float height_read_cm() {
+	float raw = height_read_raw();
+	float ratio = 4873.099237; //TBD
+	float height = (2560.0-560.0/(1-raw/ratio))/56.0;
+    return height;
 }
 
 void display_test() {

@@ -645,6 +645,39 @@ void display_time() {
 	}
 }
 
+void display_mass() {
+	char buffer[20];
+	float mass_g;
+
+	reset_buttons();
+	while (!ok_pressed && !menu_pressed) {
+		mass_g = load_cell_read_mass_g();
+		display_clear();
+		sprintf(buffer, "Mass:");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "  %.2fg", mass_g);
+		display_print_line(buffer, strlen(buffer), 1);
+	}
+}
+
+void display_density() {
+	char buffer[20];
+	float mass_g, volume_ml, density_g_ml;
+
+	reset_buttons();
+	while (!ok_pressed && !menu_pressed) {
+		mass_g = load_cell_read_mass_g();
+		volume_ml = volume_ml_read_avg();
+		density_g_ml = mass_g / volume_ml;
+
+		display_clear();
+		sprintf(buffer, "Density:");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "  %.2fg/ml", density_g_ml);
+		display_print_line(buffer, strlen(buffer), 1);
+	}
+}
+
 void guess_liquid() {
 	struct DrinkType all_drinks[NUM_DRINKS + 2]; // +2 for none and unknown
 	struct DrinkType MtnDewRegular;
@@ -1152,7 +1185,37 @@ void load_cell_init() {
 		while(1);
 	}
 
+	// Calibrate
+	buffer[0] = LOAD_CELL_CTRL_2;
+	buffer[1] = 0b00000100; // turn on analog and digital circuits
 
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(1000);
+
+	_zeroOffset = load_cell_read_avg(NUM_LC_SAMPLES);
+
+}
+
+float load_cell_read_mass_g() {
+	float average_raw = load_cell_read_avg(NUM_LC_SAMPLES);
+
+	float weight = (-average_raw + _zeroOffset) / _calibrationFactor;
+
+	return weight;
+}
+
+float load_cell_read_avg(int num_samples) {
+	float average = 0;
+	for (int i = 0; i < num_samples; i++) {
+		average += (float)load_cell_read() / (float)num_samples;
+		HAL_Delay(10);
+	}
+	return average;
 }
 
 int load_cell_read() {

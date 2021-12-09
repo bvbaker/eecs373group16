@@ -135,13 +135,18 @@ struct RelativeColorType extern color_read_percent_average(int num_samples);
 
 // Load Cell Functions
 void extern load_cell_init();
+float extern load_cell_read_avg(int num_samples);
 int extern load_cell_read();
+float extern load_cell_read_mass_g();
 
 // Button Variables (0 when not pressed, 1 when pressed and not handled)
 int extern up_pressed;
 int extern down_pressed;
 int extern menu_pressed;
 int extern ok_pressed;
+
+float extern _zeroOffset;
+float extern _calibrationFactor;
 
 // Miscellaneous
 void extern reset_buttons();
@@ -165,6 +170,8 @@ void extern display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in);
 void extern display_week_summary();
 void extern display_time();
 void extern display_level();
+void extern display_mass();
+void extern display_density();
 
 // Menu Functions
 void extern menu_call();
@@ -199,7 +206,7 @@ float extern volume_ml_read_avg();
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-#define MAIN_MENU_SIZE (8)
+#define MAIN_MENU_SIZE (12)
 #define NUM_DISPLAY_LINES (4)
 
 // Main Menu Options
@@ -209,8 +216,13 @@ float extern volume_ml_read_avg();
 #define CHECK_WEEK 3
 #define CHECK_LEVEL 4
 #define DISPLAY_TIME 5
-#define SET_DEMO_VALUES 6
-#define RESET_DAY_OR_WEEK 7
+#define SET_DEMO_VALUES 8
+#define RESET_DAY_OR_WEEK 9
+#define CHECK_MASS 6
+#define CHECK_DENSITY 7
+
+// Load Cell Defines
+#define NUM_LC_SAMPLES (10)
 
 // Height Defines
 #define NUM_HEIGHT_SAMPLES (10)
@@ -228,6 +240,8 @@ float extern volume_ml_read_avg();
 #define MTN_DEW_CODE_RED (1)
 #define DRINK_NONE (NUM_DRINKS)
 #define DRINK_UNKNOWN (NUM_DRINKS + 1)
+
+#define ZERO_OFFSET / _calibrationFactor;
 
 /* USER CODE END Private defines */
 

@@ -62,6 +62,10 @@ int up_pressed = 0;
 int down_pressed = 0;
 int menu_pressed = 0;
 int ok_pressed = 0;
+
+float _zeroOffset = 1.0;
+float _calibrationFactor = 1.0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -153,8 +157,6 @@ int main(void)
 		  menu_call();
 		  reset_buttons();
 	  }
-
-	  int load_cell_raw = load_cell_read();
 
     /* USER CODE END WHILE */
 
@@ -598,6 +600,12 @@ void menu_select(int menu_idx) {
 	case (RESET_DAY_OR_WEEK):
 			reset_day_or_week();
 			break;
+	case (CHECK_MASS):
+			display_mass();
+			break;
+	case (CHECK_DENSITY):
+			display_density();
+			break;
 	default:
 		display_print_line("INVALID SELECTION", strlen("INVALID SELECTION"), 0);
 		HAL_Delay(5000);
@@ -650,6 +658,16 @@ void menu_init() {
 		  break;
 	case (RESET_DAY_OR_WEEK):
 		  strcpy(next_item.display, " Reset Day or Week");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (CHECK_MASS):
+		  strcpy(next_item.display, " Display Mass     ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (CHECK_DENSITY):
+		  strcpy(next_item.display, " Display Density  ");
 		  next_item.valid = 1;
 		  main_menu[i] = next_item;
 		  break;

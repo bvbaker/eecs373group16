@@ -337,17 +337,63 @@ void color_init() {
 	HAL_Delay(5);
 }
 
+void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
+	display_clear();
+	char buffer[20];
+	sprintf(buffer, "Consumption for: ");
+	display_print_line(buffer, strlen(buffer), 0);
+	sprintf(buffer, " %d-%d-%d", date_in.Month, date_in.Date, date_in.Year);
+	display_print_line(buffer, strlen(buffer), 1);
+	sprintf(buffer, "Sugar: %.0fg Cal: %.0f", day_in.nutrition_total.sugar_g, day_in.nutrition_total.calories);
+	display_print_line(buffer, strlen(buffer), 2);
+	sprintf(buffer, "Caffeine: %.0fmg", day_in.nutrition_total.caffeine_mg);
+	display_print_line(buffer, strlen(buffer), 3);
+
+	reset_buttons();
+
+	while(!menu_pressed && !ok_pressed) {
+
+	}
+
+	display_off();
+	return;
+
+}
+
+void display_week_summary() {
+//	display_clear();
+//	char buffer[20];
+//	sprintf(buffer, "Consumption for: ");
+//	display_print_line(buffer, strlen(buffer), 0);
+//
+//	sprintf(buffer, "Tuesday");
+//	display_print_line(buffer, strlen(buffer), 1);
+//	sprintf(buffer, "Sugar: %dg Cal: %d", day_in.nutrition_total.sugar_g, day_in.nutrition_total.calories);
+//	display_print_line(buffer, strlen(buffer), 2);
+//	sprintf(buffer, "Caffeine: %dmg", day_in.nutrition_total.caffeine_mg);
+//	display_print_line(buffer, strlen(buffer), 3);
+//
+//	buttons_reset();
+//
+//	while(!menu_pressed && !ok_pressed) {
+//
+//	}
+//
+//	display_off();
+//	return;
+}
+
 void guess_liquid() {
 	struct DrinkType all_drinks[NUM_DRINKS + 2]; // +2 for none and unknown
 	struct DrinkType MtnDewRegular;
 	// color reading range
-	MtnDewRegular.max.r_perc = 28.5;
-	MtnDewRegular.max.g_perc = 42.0;
-	MtnDewRegular.max.b_perc = 35.0;
+	MtnDewRegular.min.r_perc = 34.5;
+	MtnDewRegular.min.g_perc = 35.0;
+	MtnDewRegular.min.b_perc = 27.5;
 
-	MtnDewRegular.min.r_perc = 26.0;
-	MtnDewRegular.min.g_perc = 38.0;
-	MtnDewRegular.min.b_perc = 31.0;
+	MtnDewRegular.max.r_perc = 36.5;
+	MtnDewRegular.max.g_perc = 37.0;
+	MtnDewRegular.max.b_perc = 29.5;
 
 	// nutrition data
 	MtnDewRegular.serving_size_ml = 591.0;
@@ -392,20 +438,34 @@ void guess_liquid() {
 
 	all_drinks[MTN_DEW_CODE_RED] = MtnDewCodeRed;
 
-	struct DrinkType None;
-	struct DrinkType Unknown;
+	struct DrinkType None = {0};
+	// color reading range
+	None.max.r_perc = 27.5;
+	None.max.g_perc = 37.0;
+	None.max.b_perc = 37.0;
 
-	struct RelativeColorType color_in, average;
+	None.min.r_perc = 27.5;
+	None.min.g_perc = 34.0;
+	None.min.b_perc = 34.0;
+
+	strcpy(None.name, "Water");
+
+
+	struct DrinkType Unknown = {0};
+	strcpy(Unknown.name, "Unknown Drink");
+
+	struct RelativeColorType average;
 	average.r_perc = 0.0;
 	average.g_perc = 0.0;
 	average.b_perc = 0.0;
 
-	for (int i = 0; i < NUM_COLOR_SAMPLES; i++) {
-		color_in = color_read_percent();
-		average.r_perc += color_in.r_perc / (float)NUM_COLOR_SAMPLES;
-		average.g_perc += color_in.g_perc / (float)NUM_COLOR_SAMPLES;
-		average.b_perc += color_in.b_perc / (float)NUM_COLOR_SAMPLES;
-	}
+//	for (int i = 0; i < NUM_COLOR_SAMPLES; i++) {
+//		color_in = color_read_percent();
+//		average.r_perc += color_in.r_perc / (float)NUM_COLOR_SAMPLES;
+//		average.g_perc += color_in.g_perc / (float)NUM_COLOR_SAMPLES;
+//		average.b_perc += color_in.b_perc / (float)NUM_COLOR_SAMPLES;
+//	}
+	average = color_read_percent_average(NUM_COLOR_SAMPLES);
 
 	// go for positive ID
 
@@ -414,6 +474,9 @@ void guess_liquid() {
 			all_drinks[i].already_guessed = 1;
 			if (display_guess(all_drinks[i])) {
 				// measure and add to daily totals
+				HAL_Delay(1000);
+				float volume_ml = volume_ml_read_avg();
+				week_add_measurement(all_drinks[i], volume_ml);
 				return;
 			}
 		}
@@ -421,7 +484,143 @@ void guess_liquid() {
 
 	// grasp for straws
 
+	for (int i = 0; i < NUM_DRINKS + 2; i++) {
+		if (!all_drinks[i].already_guessed) {
+			if (display_guess(all_drinks[i])) {
+				// measure and add to daily totals
+				HAL_Delay(1000);
+				float volume_ml = volume_ml_read_avg();
+				week_add_measurement(all_drinks[i], volume_ml);
+				return;
+			}
+		}
+	}
 
+	display_guess(all_drinks[DRINK_UNKNOWN]);
+	HAL_Delay(1000);
+	float volume_ml = volume_ml_read_avg();
+	week_add_measurement(all_drinks[DRINK_UNKNOWN], volume_ml);
+}
+
+float volume_ml_read_avg() {
+	float volume_ml = 0.0;
+
+	float height_cm = height_read_cm_avg(NUM_HEIGHT_SAMPLES);
+	volume_ml += PI * RADIUS_CM * RADIUS_CM * height_cm;
+	volume_ml += VOLUME_OFFSET_ML;
+
+	return volume_ml;
+}
+
+struct NutritionType nutrition_accumulate_amount(struct NutritionType accumulator, struct NutritionType addition, float volume_ml, float serving_size_ml) {
+	float multiplier = volume_ml / serving_size_ml;
+
+	accumulator.caffeine_mg += addition.caffeine_mg * multiplier;
+	accumulator.sugar_g += addition.sugar_g * multiplier;
+	accumulator.calories += addition.calories * multiplier;
+	accumulator.sodium_mg += addition.sodium_mg * multiplier;
+	accumulator.carbs_g += addition.carbs_g * multiplier;
+	accumulator.protein_g += addition.protein_g * multiplier;
+	accumulator.fat_g += addition.fat_g * multiplier;
+
+	return accumulator;
+}
+
+void week_reset_one_day(int index) {
+	this_week.day[index].nutrition_total.caffeine_mg = 0;
+	this_week.day[index].nutrition_total.sugar_g = 0;
+	this_week.day[index].nutrition_total.sodium_mg = 0;
+	this_week.day[index].nutrition_total.calories = 0;
+	this_week.day[index].nutrition_total.carbs_g = 0;
+	this_week.day[index].nutrition_total.protein_g = 0;
+	this_week.day[index].nutrition_total.fat_g = 0;
+}
+
+void week_reset() {
+	for (int i = 0; i < 7; i++) {
+		week_reset_one_day(i);
+	}
+}
+
+struct DrinkType drink_get_empty() {
+	struct DrinkType empty_drink;
+	empty_drink.serving_size_ml = 1.0;
+	strcpy(empty_drink.name, "");
+	empty_drink.already_guessed = 0;
+
+	empty_drink.nutrition_per_serving.caffeine_mg = 0;
+	empty_drink.nutrition_per_serving.sugar_g = 0;
+	empty_drink.nutrition_per_serving.sodium_mg = 0;
+	empty_drink.nutrition_per_serving.calories = 0;
+	empty_drink.nutrition_per_serving.carbs_g = 0;
+	empty_drink.nutrition_per_serving.protein_g = 0;
+	empty_drink.nutrition_per_serving.fat_g = 0;
+
+	return empty_drink;
+}
+
+void week_add_measurement(struct DrinkType drink_in, float volume_ml) {
+	  RTC_TimeTypeDef currTime = {0};
+	  RTC_DateTypeDef currDate = {0};
+	  HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	  HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
+	  struct Date last_date, curr_date;
+	  last_date.d = last_read_date.Date;
+	  last_date.m = last_read_date.Month;
+	  last_date.y = last_read_date.Year;
+
+	  curr_date.d = currDate.Date;
+	  curr_date.m = currDate.Month;
+	  curr_date.y = currDate.Year;
+
+	  int curr_weekday_idx = currDate.WeekDay - 1;
+	  int last_weekday_idx = last_read_date.WeekDay - 1;
+
+	  int days_since_update = getDifference(last_date, curr_date);
+
+	  // clear all weekdays since the last reading
+	  if (days_since_update > 0) {
+		  if (days_since_update >= 7) {
+			  // clear out the week
+			  week_reset();
+		  } else {
+			  // clear out days between currDate and delete what was at currDate
+			  int i = last_weekday_idx;
+			  while (1) {
+				  week_reset_one_day(i);
+				  if (i == curr_weekday_idx) {
+					  break;
+				  }
+
+				  if (i + 1 < 7) {
+					  i++;
+				  } else {
+					  i = 0;
+				  }
+			  }
+		  }
+	  }
+
+	  this_week.day[curr_weekday_idx].nutrition_total =
+			  nutrition_accumulate_amount(this_week.day[curr_weekday_idx].nutrition_total, drink_in.nutrition_per_serving, volume_ml, drink_in.serving_size_ml);
+
+}
+
+struct RelativeColorType extern color_read_percent_average(int num_samples) {
+	struct RelativeColorType color_in, average;
+	average.r_perc = 0;
+	average.g_perc = 0;
+	average.b_perc = 0;
+
+	for (int i = 0; i < num_samples; i++) {
+		color_in = color_read_percent();
+		average.r_perc += color_in.r_perc / (float)num_samples;
+		average.g_perc += color_in.g_perc / (float)num_samples;
+		average.b_perc += color_in.b_perc / (float)num_samples;
+	}
+
+	return average;
 }
 
 int guess_within_range(struct DrinkType drink, struct RelativeColorType measured) {
@@ -679,6 +878,15 @@ float height_read_cm() {
     return height;
 }
 
+float extern height_read_cm_avg(int num_samples) {
+	float average = 0;
+	for (int i = 0; i < num_samples; i++) {
+		average += height_read_cm() / (float)num_samples;
+		HAL_Delay(3);
+	}
+	return average;
+}
+
 void display_test() {
 	uint8_t buffer[DISPLAY_WIDTH];
 	char string[DISPLAY_WIDTH];
@@ -896,6 +1104,8 @@ void display_init() {
 	  HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
 	  HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 
+	  last_read_date = currDate;
+
 	  time_make_string(timestring, datestring, currTime, currDate);
 	  display_print_line(timestring, 5, 1);
 	  display_print_line(datestring, 8, 2);
@@ -922,6 +1132,67 @@ void string_to_uint8_t(char* str, uint8_t* buff, int len) {
 
 	return;
 }
+
+// CODE TAKEN FROM (https://www.geeksforgeeks.org/find-number-of-days-between-two-given-dates/)
+// did not have time to implement by myself
+
+// To store number of days in
+// all months from January to Dec.
+const int monthDays[12]
+    = { 31, 28, 31, 30, 31, 30,
+       31, 31, 30, 31, 30, 31 };
+
+// This function counts number of
+// leap years before the given date
+int countLeapYears(struct Date d)
+{
+    int years = d.y;
+
+    // Check if the current year needs to be
+    //  considered for the count of leap years
+    // or not
+    if (d.m <= 2)
+        years--;
+
+    // An year is a leap year if it
+    // is a multiple of 4,
+    // multiple of 400 and not a
+     // multiple of 100.
+    return years / 4
+           - years / 100
+           + years / 400;
+}
+
+// This function returns number of
+// days between two given dates
+int getDifference(struct Date dt1, struct Date dt2)
+{
+    // COUNT TOTAL NUMBER OF DAYS
+    // BEFORE FIRST DATE 'dt1'
+
+    // initialize count using years and day
+    long int n1 = dt1.y * 365 + dt1.d;
+
+    // Add days for months in given date
+    for (int i = 0; i < dt1.m - 1; i++)
+        n1 += monthDays[i];
+
+    // Since every leap year is of 366 days,
+    // Add a day for every leap year
+    n1 += countLeapYears(dt1);
+
+    // SIMILARLY, COUNT TOTAL NUMBER OF
+    // DAYS BEFORE 'dt2'
+
+    long int n2 = dt2.y * 365 + dt2.d;
+    for (int i = 0; i < dt2.m - 1; i++)
+        n2 += monthDays[i];
+    n2 += countLeapYears(dt2);
+
+    // return difference between two counts
+    return (n2 - n1);
+}
+
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

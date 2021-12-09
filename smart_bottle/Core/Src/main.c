@@ -56,6 +56,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 struct MenuItem main_menu[MAIN_MENU_SIZE];
 struct WeekType this_week;
+RTC_DateTypeDef last_read_date;
 
 int up_pressed = 0;
 int down_pressed = 0;
@@ -129,10 +130,6 @@ int main(void)
 //  display_test(hi2c1);
 
 //  load_cell_init();
-  for (int i = 0; i < 7; i++) { // initialize last 30 days
-//	  this_week[i].counted = 0; // make a queue?
-
-  }
 
   display_init();
 
@@ -144,11 +141,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  uint16_t r, g, b, c;
-//  float r_percent, g_percent, b_percent, total_feedback;
 
-
-  HAL_Delay(1000);
+  HAL_Delay(5000);
   display_clear();
   display_off();
 
@@ -160,44 +154,9 @@ int main(void)
 		  reset_buttons();
 	  }
 
-//	  r = color_read('r');
-//	  HAL_Delay(100);
-//	  g = color_read('g');
-//	  HAL_Delay(100);
-//	  b = color_read('b');
-//	  HAL_Delay(100);
-//	  c = color_read('c');
-//	  HAL_Delay(100);
-
-//	  total_feedback = r + g + b;
-//	  r_percent = r / total_feedback * 100.0;
-//	  g_percent = g / total_feedback * 100.0;
-//	  b_percent = b / total_feedback * 100.0;
-
-//	  color_off(); // does not turn off the LED :(
-//
-//	  HAL_Delay(100);
-//
-//	  color_init();
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-   //level sensor
-    double raw;
-    double height;
-
-    // Get ADC value
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-
-    raw = HAL_ADC_GetValue(&hadc1);
-      
-      double ratio = 4873.099237; //TBD
-
-    height = (2560.0-560.0/(1-raw/ratio))/56.0;
-
 
   }
   /* USER CODE END 3 */
@@ -614,6 +573,26 @@ void menu_select(int menu_idx) {
 	case (DISPLAY_COLOR):
 			color_display_debug();
 			break;
+	case (CHECK_DAY):
+			week_add_measurement(drink_get_empty(), 0);
+		    RTC_TimeTypeDef currTime = {0};
+		    RTC_DateTypeDef currDate = {0};
+		    HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+		    HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+			display_day_summary(this_week.day[currDate.WeekDay - 1], currDate);
+			break;
+	case (CHECK_WEEK):
+//			display_week();
+			break;
+	case (DISPLAY_TIME):
+//			display_time();
+			break;
+	case (SET_DEMO_VALUES):
+//			set_demo_week();
+			break;
+	case (RESET_DAY_OR_WEEK):
+//			reset_day_or_week();
+			break;
 	default:
 		display_print_line("INVALID SELECTION", strlen("INVALID SELECTION"), 0);
 		HAL_Delay(5000);
@@ -639,10 +618,36 @@ void menu_init() {
 	  	  next_item.valid = 1;
 		  main_menu[i] = next_item;
 		  break;
+	case (CHECK_DAY):
+		  strcpy(next_item.display, " Check Day        ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (CHECK_WEEK):
+		  strcpy(next_item.display, " Check Week       ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (DISPLAY_TIME):
+		  strcpy(next_item.display, " Display Time     ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (SET_DEMO_VALUES):
+		  strcpy(next_item.display, " Set Demo Week    ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (RESET_DAY_OR_WEEK):
+		  strcpy(next_item.display, " Reset Day or Week");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
 	  default:
 		  strcpy(next_item.display, "   --- N/A ---    ");
 		  next_item.valid = 1;
 		  main_menu[i] = next_item;
+		  break;
 	  }
 	}
 }

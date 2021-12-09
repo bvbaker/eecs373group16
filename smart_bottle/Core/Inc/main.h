@@ -66,12 +66,19 @@ struct DrinkType {
 
 struct DayType {
 	struct NutritionType nutrition_total;
-	RTC_DateTypeDef date;
-	int counted;
+//	RTC_DateTypeDef date;
+//	int counted;
 };
 
 struct WeekType {
 	struct DayType day[7];
+};
+
+// CODE TAKEN FROM (https://www.geeksforgeeks.org/find-number-of-days-between-two-given-dates/)
+// did not have time to implement by myself
+// A date has day 'd', month 'm' and year 'y'
+struct Date {
+    int d, m, y;
 };
 
 /* USER CODE END ET */
@@ -86,6 +93,8 @@ RTC_HandleTypeDef extern hrtc;
 
 struct WeekType extern this_week;
 
+RTC_DateTypeDef extern last_read_date;
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -97,6 +106,20 @@ struct WeekType extern this_week;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+// Time Functions
+void extern week_add_measurement(struct DrinkType drink_in, float volume_ml);
+void extern week_reset();
+void extern week_reset_one_day(int index);
+
+// CODE TAKEN FROM (https://www.geeksforgeeks.org/find-number-of-days-between-two-given-dates/)
+// did not have time to implement by myself
+// dt1 is older than dt2
+int extern getDifference(struct Date dt1, struct Date dt2);
+
+// Nutrition Functions
+struct NutritionType extern nutrition_accumulate_amount(struct NutritionType accumulator, struct NutritionType addition, float volume_ml, float serving_size_ml);
+
+struct DrinkType extern drink_get_empty();
 
 // Color Functions
 void extern color_init();
@@ -107,6 +130,7 @@ struct RelativeColorType extern color_read_percent();
 struct RelativeColorType extern color_abs_to_rel(struct ColorType color_in);
 void extern color_display_debug();
 void extern color_make_percent_line(char* buffer, float percent, char color);
+struct RelativeColorType extern color_read_percent_average(int num_samples);
 
 // Load Cell Functions
 void extern load_cell_init();
@@ -131,6 +155,9 @@ void extern display_off();
 void extern display_set_brightness(uint8_t brightness_in);
 void extern display_init();
 void extern display_set_contrast(uint8_t contrast_in);
+int extern display_guess(struct DrinkType guessed_drink);
+void extern display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in);
+void extern display_week_summary();
 
 // Menu Functions
 void extern menu_call();
@@ -141,12 +168,13 @@ void extern menu_select(int menu_idx);
 // Guess Functions
 void extern guess_liquid();
 int extern guess_within_range(struct DrinkType drink, struct RelativeColorType measured);
-int extern display_guess(struct DrinkType guessed_drink);
 
 // Height Functions
 //void extern height_init();
 float extern height_read_raw();
 float extern height_read_cm();
+float extern height_read_cm_avg(int num_samples);
+float extern volume_ml_read_avg();
 
 /* USER CODE END EFP */
 
@@ -170,12 +198,21 @@ float extern height_read_cm();
 // Main Menu Options
 #define GUESS_LIQUID 0
 #define	DISPLAY_COLOR 1
-#define UPDATE_GOALS 2
-#define RESET_DAY 3
-#define CHECK_TIME 4
-#define CHECK_DAY 5
-#define CHECK_WEEK 6
-#define RESET_ALL 7
+#define CHECK_DAY 2
+#define CHECK_WEEK 3
+#define CHECK_LEVEL 4
+#define DISPLAY_TIME 5
+#define SET_DEMO_VALUES 6
+#define RESET_DAY_OR_WEEK 7
+
+// Height Defines
+#define NUM_HEIGHT_SAMPLES (10)
+
+// Volume Defines
+#define PI (3.14159265359)
+#define DIAMETER_CM (8.0)
+#define RADIUS_CM (DIAMETER_CM / 2.0)
+#define VOLUME_OFFSET_ML (2.0)
 
 // Guess Defines
 #define NUM_COLOR_SAMPLES (10)

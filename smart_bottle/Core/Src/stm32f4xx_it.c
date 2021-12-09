@@ -60,6 +60,11 @@
 #define LOAD_CELL_PU_CTRL	(0x00)
 #define LOAD_CELL_ADC_REG	(0x12)
 #define LOAD_CELL_DATA_READY_MASK (1 << 5)
+#define LOAD_CELL_CTRL_1	(0x01)
+#define LOAD_CELL_CTRL_2	(0x02)
+#define	LOAD_CELL_I2C_CTRL	(0x11)
+#define LOAD_CELL_ADC_CTRL	(0x15)
+#define LOAD_CELL_PWR_CTRL	(0x1C)
 
 /* USER CODE END PD */
 
@@ -1072,21 +1077,96 @@ void load_cell_init() {
 	uint8_t buffer[3] = {0,0,0};
 	HAL_StatusTypeDef ret;
 
-	// first, check valid, and don't stop asking until we get a valid response
+	// Reset All Regs
 
+	// first, check valid, and don't stop asking until we get a valid response
 	buffer[0] = LOAD_CELL_PU_CTRL;
-	buffer[1] = 0b00010110; // turn on analog and digital circuits
+	buffer[1] = 0x01; // turn on analog and digital circuits
 
 	// read status reg
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
 	if ( ret != HAL_OK ) {
 		while(1);
 	}
+
+	buffer[0] = LOAD_CELL_PU_CTRL;
+	buffer[1] = 0x00; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	// Power On Digital and Analog Circuits
+
+	buffer[0] = LOAD_CELL_PU_CTRL;
+	buffer[1] = 0b00000110; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	HAL_Delay(200);
+
+	// Set LDO and Gain
+
+	buffer[0] = LOAD_CELL_CTRL_1;
+	buffer[1] = 0b00100111; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	// Set Sample Rate
+	buffer[0] = LOAD_CELL_CTRL_2;
+	buffer[1] = 0x00; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	// Turn off CLK_CHP
+	buffer[0] = LOAD_CELL_ADC_CTRL;
+	buffer[1] = 0x30; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+	// Enable 330pF decoupling cap on channel 2
+	buffer[0] = LOAD_CELL_PWR_CTRL;
+	buffer[1] = 0x80; // turn on analog and digital circuits
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
+
+
 }
 
 int load_cell_read() {
 	uint8_t buffer[3] = {0,0,0};
 	HAL_StatusTypeDef ret;
+
+	buffer[0] = LOAD_CELL_PU_CTRL;
+	buffer[1] = 0b00010110; // turn on analog and digital circuits, set cycle start
+
+	// read status reg
+	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
+	if ( ret != HAL_OK ) {
+		while(1);
+	}
 
 	// first, check valid, and don't stop asking until we get a valid response
 	while (!buffer[0]) {

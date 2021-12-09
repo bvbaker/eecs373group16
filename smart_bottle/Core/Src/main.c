@@ -129,7 +129,7 @@ int main(void)
 
 //  display_test(hi2c1);
 
-//  load_cell_init();
+  load_cell_init();
 
   display_init();
 
@@ -153,6 +153,8 @@ int main(void)
 		  menu_call();
 		  reset_buttons();
 	  }
+
+	  int load_cell_raw = load_cell_read();
 
     /* USER CODE END WHILE */
 

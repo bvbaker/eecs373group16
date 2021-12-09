@@ -64,7 +64,7 @@ int menu_pressed = 0;
 int ok_pressed = 0;
 
 float _zeroOffset = 1.0;
-float _calibrationFactor = 1.0;
+float _calibrationFactor = 411.43;
 
 /* USER CODE END PV */
 

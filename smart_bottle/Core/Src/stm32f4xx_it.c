@@ -1197,6 +1197,8 @@ void load_cell_init() {
 
 	HAL_Delay(1000);
 
+	load_cell_read_avg(NUM_LC_SAMPLES);
+
 	_zeroOffset = load_cell_read_avg(NUM_LC_SAMPLES);
 
 }
@@ -1204,7 +1206,7 @@ void load_cell_init() {
 float load_cell_read_mass_g() {
 	float average_raw = load_cell_read_avg(NUM_LC_SAMPLES);
 
-	float weight = (-average_raw + _zeroOffset) / _calibrationFactor;
+	float weight = (average_raw - _zeroOffset) / _calibrationFactor;
 
 	return weight;
 }

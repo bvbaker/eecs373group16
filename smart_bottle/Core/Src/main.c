@@ -574,18 +574,21 @@ void menu_select(int menu_idx) {
 			color_display_debug();
 			break;
 	case (CHECK_DAY):
-			week_add_measurement(drink_get_empty(), 0);
-		    RTC_TimeTypeDef currTime = {0};
-		    RTC_DateTypeDef currDate = {0};
-		    HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
-		    HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+			dumb_way_to_update_week();
+			RTC_TimeTypeDef currTime = {0};
+			RTC_DateTypeDef currDate = {0};
+			HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+			HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 			display_day_summary(this_week.day[currDate.WeekDay - 1], currDate);
 			break;
 	case (CHECK_WEEK):
-//			display_week();
+			display_week_summary();
+			break;
+	case (CHECK_LEVEL):
+			display_level();
 			break;
 	case (DISPLAY_TIME):
-//			display_time();
+			display_time();
 			break;
 	case (SET_DEMO_VALUES):
 //			set_demo_week();
@@ -625,6 +628,11 @@ void menu_init() {
 		  break;
 	case (CHECK_WEEK):
 		  strcpy(next_item.display, " Check Week       ");
+		  next_item.valid = 1;
+		  main_menu[i] = next_item;
+		  break;
+	case (CHECK_LEVEL):
+		  strcpy(next_item.display, " Display Level    ");
 		  next_item.valid = 1;
 		  main_menu[i] = next_item;
 		  break;

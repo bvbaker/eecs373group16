@@ -142,7 +142,9 @@ int extern down_pressed;
 int extern menu_pressed;
 int extern ok_pressed;
 
+// Miscellaneous
 void extern reset_buttons();
+void extern dumb_way_to_update_week();
 
 // Display Functions
 void extern display_test();
@@ -158,6 +160,8 @@ void extern display_set_contrast(uint8_t contrast_in);
 int extern display_guess(struct DrinkType guessed_drink);
 void extern display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in);
 void extern display_week_summary();
+void extern display_time();
+void extern display_level();
 
 // Menu Functions
 void extern menu_call();

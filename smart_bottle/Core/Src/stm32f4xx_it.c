@@ -337,6 +337,31 @@ void color_init() {
 	HAL_Delay(5);
 }
 
+void display_level() {
+	float level_cm = height_read_cm_avg(NUM_HEIGHT_SAMPLES);
+	float volume_ml = PI * RADIUS_CM * RADIUS_CM * level_cm;
+	char buffer[20];
+
+	reset_buttons();
+	while (!ok_pressed && !menu_pressed) {
+		display_clear();
+		sprintf(buffer, "Current Level:");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "  %.2fcm", level_cm);
+		display_print_line(buffer, strlen(buffer), 1);
+		sprintf(buffer, "Current Volume:");
+		display_print_line(buffer, strlen(buffer), 2);
+		sprintf(buffer, "  %.2fml", volume_ml);
+		display_print_line(buffer, strlen(buffer), 3);
+
+		HAL_Delay(1000);
+
+		level_cm = height_read_cm_avg(NUM_HEIGHT_SAMPLES);
+		volume_ml = PI * RADIUS_CM * RADIUS_CM * level_cm;
+	}
+
+}
+
 void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
 	display_clear();
 	char buffer[20];
@@ -344,9 +369,9 @@ void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
 	display_print_line(buffer, strlen(buffer), 0);
 	sprintf(buffer, " %d-%d-%d", date_in.Month, date_in.Date, date_in.Year);
 	display_print_line(buffer, strlen(buffer), 1);
-	sprintf(buffer, "Sugar: %.0fg Cal: %.0f", day_in.nutrition_total.sugar_g, day_in.nutrition_total.calories);
+	sprintf(buffer, "Sugar: %.2fg", day_in.nutrition_total.sugar_g);
 	display_print_line(buffer, strlen(buffer), 2);
-	sprintf(buffer, "Caffeine: %.0fmg", day_in.nutrition_total.caffeine_mg);
+	sprintf(buffer, "Caffeine: %.2fmg", day_in.nutrition_total.caffeine_mg);
 	display_print_line(buffer, strlen(buffer), 3);
 
 	reset_buttons();
@@ -360,27 +385,165 @@ void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
 
 }
 
+struct NutritionType nutrition_accumulate_week() {
+	struct NutritionType nutrition_whole_week;
+
+	nutrition_whole_week.caffeine_mg = 0.0;
+	nutrition_whole_week.sugar_g = 0.0;
+	nutrition_whole_week.sodium_mg = 0.0;
+	nutrition_whole_week.calories = 0.0;
+	nutrition_whole_week.carbs_g = 0.0;
+	nutrition_whole_week.protein_g = 0.0;
+	nutrition_whole_week.fat_g = 0.0;
+
+	for (int i = 0; i < 7; i++) {
+		nutrition_whole_week.caffeine_mg += this_week.day[i].nutrition_total.caffeine_mg;
+		nutrition_whole_week.sugar_g += this_week.day[i].nutrition_total.sugar_g;
+		nutrition_whole_week.sodium_mg += this_week.day[i].nutrition_total.sodium_mg;
+		nutrition_whole_week.calories += this_week.day[i].nutrition_total.calories;
+		nutrition_whole_week.carbs_g += this_week.day[i].nutrition_total.carbs_g;
+		nutrition_whole_week.protein_g += this_week.day[i].nutrition_total.protein_g;
+		nutrition_whole_week.fat_g += this_week.day[i].nutrition_total.fat_g;
+	}
+
+	return nutrition_whole_week;
+}
+
 void display_week_summary() {
-//	display_clear();
-//	char buffer[20];
-//	sprintf(buffer, "Consumption for: ");
-//	display_print_line(buffer, strlen(buffer), 0);
-//
-//	sprintf(buffer, "Tuesday");
-//	display_print_line(buffer, strlen(buffer), 1);
-//	sprintf(buffer, "Sugar: %dg Cal: %d", day_in.nutrition_total.sugar_g, day_in.nutrition_total.calories);
-//	display_print_line(buffer, strlen(buffer), 2);
-//	sprintf(buffer, "Caffeine: %dmg", day_in.nutrition_total.caffeine_mg);
-//	display_print_line(buffer, strlen(buffer), 3);
-//
-//	buttons_reset();
-//
-//	while(!menu_pressed && !ok_pressed) {
-//
-//	}
-//
-//	display_off();
-//	return;
+	display_clear();
+	char buffer[20];
+	dumb_way_to_update_week();
+	struct NutritionType nutrition_temp = nutrition_accumulate_week();
+
+	sprintf(buffer, "Weekly Consumption:");
+	display_print_line(buffer, strlen(buffer), 0);
+	sprintf(buffer, "Sugar: %.2fg", nutrition_temp.sugar_g);
+	display_print_line(buffer, strlen(buffer), 1);
+	sprintf(buffer, "Caffeine: %.2fmg", nutrition_temp.caffeine_mg);
+	display_print_line(buffer, strlen(buffer), 2);
+	sprintf(buffer, "Cal: %.0f", nutrition_temp.calories);
+	display_print_line(buffer, strlen(buffer), 3);
+
+	reset_buttons();
+	while (!ok_pressed) {
+		if (menu_pressed) {
+			return;
+		}
+	}
+
+	RTC_TimeTypeDef currTime = {0};
+	RTC_DateTypeDef currDate = {0};
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
+	int week_index, today_index, last_index;
+	today_index = currDate.WeekDay - 1;
+	week_index = today_index;
+	last_index = 7; // intentionally out of bounds
+
+	reset_buttons();
+
+	while (!menu_pressed && !ok_pressed) {
+		if (last_index != week_index) {
+			display_clear();
+			last_index = week_index;
+			sprintf(buffer, "Consumption for: ");
+			display_print_line(buffer, strlen(buffer), 0);
+
+			if (week_index == today_index) {
+				sprintf(buffer, "  Today");
+			} else {
+			switch (week_index) {
+				case(0):
+						sprintf(buffer, "  Monday");
+						break;
+				case(1):
+						sprintf(buffer, "  Tuesday");
+						break;
+				case(2):
+						sprintf(buffer, "  Wednesday");
+						break;
+				case(3):
+						sprintf(buffer, "  Thursday");
+						break;
+				case(4):
+						sprintf(buffer, "  Friday");
+						break;
+				case(5):
+						sprintf(buffer, "  Saturday");
+						break;
+				case(6):
+						sprintf(buffer, "  Sunday");
+						break;
+				}
+			}
+
+			display_print_line(buffer, strlen(buffer), 1);
+			sprintf(buffer, "Sugar: %.2fg", this_week.day[week_index].nutrition_total.sugar_g);
+			display_print_line(buffer, strlen(buffer), 2);
+			sprintf(buffer, "Caffeine: %.2fmg", this_week.day[week_index].nutrition_total.caffeine_mg);
+			display_print_line(buffer, strlen(buffer), 3);
+		}
+
+
+
+		if (down_pressed) {
+			if (week_index + 1 < 7)
+				week_index++;
+			else
+				week_index = 0;
+
+			reset_buttons();
+		} else if (up_pressed) {
+			if (week_index > 0)
+				week_index--;
+			else
+				week_index = 6;
+
+			reset_buttons();
+		}
+	}
+
+
+	display_off();
+	return;
+}
+
+void display_update_time(RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
+	char buffer[20];
+
+	sprintf(buffer, "Current Date:");
+	display_print_line(buffer, strlen(buffer), 0);
+	sprintf(buffer, "  %2d-%2d-20%2d", currDate.Month, currDate.Date, currDate.Year);
+	display_print_line(buffer, strlen(buffer), 1);
+	sprintf(buffer, "Current Time:");
+	display_print_line(buffer, strlen(buffer), 2);
+	sprintf(buffer, "  %2d:%2d:%2d", currTime.Hours, currTime.Minutes, currTime.Seconds);
+	display_print_line(buffer, strlen(buffer), 3);
+}
+
+void display_time() {
+	display_clear();
+	RTC_TimeTypeDef currTime = {0};
+	RTC_DateTypeDef currDate = {0};
+	RTC_TimeTypeDef lastTime = {0};
+	RTC_DateTypeDef lastDate = {0};
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+	display_update_time(currTime, currDate);
+	reset_buttons();
+	while (!menu_pressed && !ok_pressed) {
+
+		HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+		HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
+		if (lastTime.Seconds != currTime.Seconds) {
+			display_update_time(currTime, currDate);
+		}
+
+		lastTime = currTime;
+		lastDate = currDate;
+	}
 }
 
 void guess_liquid() {
@@ -500,6 +663,14 @@ void guess_liquid() {
 	HAL_Delay(1000);
 	float volume_ml = volume_ml_read_avg();
 	week_add_measurement(all_drinks[DRINK_UNKNOWN], volume_ml);
+}
+
+void dumb_way_to_update_week() {
+	week_add_measurement(drink_get_empty(), 0);
+	RTC_TimeTypeDef currTime = {0};
+	RTC_DateTypeDef currDate = {0};
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 }
 
 float volume_ml_read_avg() {

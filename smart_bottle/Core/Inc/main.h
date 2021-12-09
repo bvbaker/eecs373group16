@@ -120,6 +120,7 @@ int extern getDifference(struct Date dt1, struct Date dt2);
 struct NutritionType extern nutrition_accumulate_amount(struct NutritionType accumulator, struct NutritionType addition, float volume_ml, float serving_size_ml);
 
 struct DrinkType extern drink_get_empty();
+struct NutritionType extern nutrition_get_empty();
 
 // Color Functions
 void extern color_init();
@@ -145,6 +146,8 @@ int extern ok_pressed;
 // Miscellaneous
 void extern reset_buttons();
 void extern dumb_way_to_update_week();
+void extern reset_day_or_week();
+void extern set_demo_week();
 
 // Display Functions
 void extern display_test();

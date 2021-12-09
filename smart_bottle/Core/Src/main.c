@@ -591,10 +591,10 @@ void menu_select(int menu_idx) {
 			display_time();
 			break;
 	case (SET_DEMO_VALUES):
-//			set_demo_week();
+			set_demo_week();
 			break;
 	case (RESET_DAY_OR_WEEK):
-//			reset_day_or_week();
+			reset_day_or_week();
 			break;
 	default:
 		display_print_line("INVALID SELECTION", strlen("INVALID SELECTION"), 0);

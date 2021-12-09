@@ -409,6 +409,100 @@ struct NutritionType nutrition_accumulate_week() {
 	return nutrition_whole_week;
 }
 
+struct NutritionType nutrition_get_empty() {
+	struct NutritionType nutrition_empty;
+
+	nutrition_empty.caffeine_mg = 0;
+	nutrition_empty.sugar_g = 0;
+	nutrition_empty.sodium_mg = 0;
+	nutrition_empty.calories = 0;
+	nutrition_empty.carbs_g = 0;
+	nutrition_empty.protein_g = 0;
+	nutrition_empty.fat_g = 0;
+
+	return nutrition_empty;
+}
+
+void set_demo_week() {
+	struct NutritionType nutrition_temp;
+
+	for (int i = 0; i < 7; i++) {
+		switch (i) {
+		case (1):
+			nutrition_temp.caffeine_mg = 28;
+			nutrition_temp.sugar_g = 50;
+			nutrition_temp.sodium_mg = 200;
+			nutrition_temp.calories = 150;
+			nutrition_temp.carbs_g = 50;
+			nutrition_temp.protein_g = 0;
+			nutrition_temp.fat_g = 0;
+			break;
+		case (2):
+			nutrition_temp.caffeine_mg = 70;
+			nutrition_temp.sugar_g = 12;
+			nutrition_temp.sodium_mg = 620;
+			nutrition_temp.calories = 110;
+			nutrition_temp.carbs_g = 12;
+			nutrition_temp.protein_g = 0;
+			nutrition_temp.fat_g = 0;
+			break;
+		case (4):
+			nutrition_temp.caffeine_mg = 15;
+			nutrition_temp.sugar_g = 96;
+			nutrition_temp.sodium_mg = 200;
+			nutrition_temp.calories = 410;
+			nutrition_temp.carbs_g = 96;
+			nutrition_temp.protein_g = 0;
+			nutrition_temp.fat_g = 0;
+			break;
+		case (6):
+			nutrition_temp.caffeine_mg = 124;
+			nutrition_temp.sugar_g = 110;
+			nutrition_temp.sodium_mg = 550;
+			nutrition_temp.calories = 460;
+			nutrition_temp.carbs_g = 110;
+			nutrition_temp.protein_g = 0;
+			nutrition_temp.fat_g = 0;
+			break;
+		default:
+			nutrition_temp = nutrition_get_empty();
+		}
+
+		this_week.day[i].nutrition_total = nutrition_temp;
+	}
+}
+
+void reset_day_or_week() {
+	dumb_way_to_update_week();
+	RTC_TimeTypeDef currTime = {0};
+	RTC_DateTypeDef currDate = {0};
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+
+	char buffer[20];
+
+	display_clear();
+
+	sprintf(buffer, "RESET");
+	display_print_line(buffer, strlen(buffer), 0);
+	sprintf(buffer, "BLK or WHT: Today");
+	display_print_line(buffer, strlen(buffer), 2);
+	sprintf(buffer, "BLU or YEL: Week");
+	display_print_line(buffer, strlen(buffer), 3);
+
+	reset_buttons();
+	while(1) {
+		if (up_pressed | down_pressed) {
+			week_reset();
+			return;
+		}
+		else if (ok_pressed | menu_pressed) {
+			this_week.day[currDate.WeekDay - 1].nutrition_total = nutrition_get_empty();
+			return;
+		}
+	}
+}
+
 void display_week_summary() {
 	display_clear();
 	char buffer[20];
@@ -1128,6 +1222,14 @@ void display_test() {
 //	}
 }
 
+
+// BEST USAGE: create a 20 character buffer and write into the buffer with sprintf, then pass the buffer in here
+// ie.
+/*
+ * char buffer[20];
+ * sprintf(buffer, "my data: %.2f%%", my_float);
+ * display_print_line(buffer, strlen(buffer), 0);
+ */
 void display_print_line(char* str, int len, int line) {
 	display_set_cursor_line(line);
 

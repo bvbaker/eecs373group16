@@ -1389,7 +1389,7 @@ float height_read_cm() {
     return height;
 }
 
-float extern height_read_cm_avg(int num_samples) {
+float height_read_cm_avg(int num_samples) {
 	float average = 0;
 	for (int i = 0; i < num_samples; i++) {
 		average += height_read_cm() / (float)num_samples;

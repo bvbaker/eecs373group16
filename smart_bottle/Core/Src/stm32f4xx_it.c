@@ -345,7 +345,7 @@ void color_init() {
 void display_level() {
 	float level_cm = height_read_cm_avg(NUM_HEIGHT_SAMPLES);
 	float volume_ml = PI * RADIUS_CM * RADIUS_CM * level_cm;
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 
 	reset_buttons();
 	while (!ok_pressed && !menu_pressed) {
@@ -369,7 +369,7 @@ void display_level() {
 
 void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
 	display_clear();
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 	sprintf(buffer, "Consumption for: ");
 	display_print_line(buffer, strlen(buffer), 0);
 	sprintf(buffer, " %d-%d-%d", date_in.Month, date_in.Date, date_in.Year);
@@ -385,9 +385,72 @@ void display_day_summary(struct DayType day_in, RTC_DateTypeDef date_in) {
 
 	}
 
+	goals_check_daily(day_in);
+
 	display_off();
 	return;
 
+}
+
+void goals_check_daily(struct DayType day_in) {
+	char buffer[DISPLAY_WIDTH];
+
+	display_clear();
+
+	float remaining_sugar_goal= 0;
+
+	if (day_in.nutrition_total.sugar_g < SUGAR_GOAL_G_DAILY * 1.2 &&
+			day_in.nutrition_total.sugar_g > SUGAR_GOAL_G_DAILY * 0.8) {
+		sprintf(buffer, "Great job on sugar!");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "Keep it up!");
+		display_print_line(buffer, strlen(buffer), 1);
+	}
+	else if (day_in.nutrition_total.sugar_g >= SUGAR_GOAL_G_DAILY * 1.2) {
+		remaining_sugar_goal = (SUGAR_GOAL_G_WEEKLY - day_in.nutrition_total.sugar_g) / 6.0;
+		if (remaining_sugar_goal < 0.0) {
+			remaining_sugar_goal = 0.0;
+		}
+		sprintf(buffer, "Cut back on sugar!");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "Target %.2fg", remaining_sugar_goal);
+		display_print_line(buffer, strlen(buffer), 1);
+	} else {
+		remaining_sugar_goal = SUGAR_GOAL_G_DAILY - day_in.nutrition_total.sugar_g;
+		sprintf(buffer, "Under on sugar!");
+		display_print_line(buffer, strlen(buffer), 0);
+		sprintf(buffer, "%.2fg remaining", remaining_sugar_goal);
+		display_print_line(buffer, strlen(buffer), 1);
+	}
+
+	if (day_in.nutrition_total.caffeine_mg < CAFFEINE_GOAL_MG_DAILY * 1.2 &&
+			day_in.nutrition_total.caffeine_mg > CAFFEINE_GOAL_MG_DAILY * 0.8) {
+		sprintf(buffer, "Great job on caff!");
+		display_print_line(buffer, strlen(buffer), 2);
+		sprintf(buffer, "Keep it up!");
+		display_print_line(buffer, strlen(buffer), 3);
+	}
+	else if (day_in.nutrition_total.caffeine_mg >= CAFFEINE_GOAL_MG_DAILY * 1.2) {
+		remaining_sugar_goal = (CAFFEINE_GOAL_MG_WEEKLY - day_in.nutrition_total.caffeine_mg) / 6.0;
+		if (remaining_sugar_goal < 0.0) {
+			remaining_sugar_goal = 0.0;
+		}
+		sprintf(buffer, "Cut back on caff!");
+		display_print_line(buffer, strlen(buffer), 2);
+		sprintf(buffer, "Target %.2fmg daily", remaining_sugar_goal);
+		display_print_line(buffer, strlen(buffer), 3);
+	} else {
+		remaining_sugar_goal = CAFFEINE_GOAL_MG_DAILY - day_in.nutrition_total.caffeine_mg;
+		sprintf(buffer, "Under on caff!");
+		display_print_line(buffer, strlen(buffer), 2);
+		sprintf(buffer, "%.2fmg remaining", remaining_sugar_goal);
+		display_print_line(buffer, strlen(buffer), 3);
+	}
+
+	reset_buttons();
+	while (!ok_pressed && !menu_pressed);
+
+	return;
 }
 
 struct NutritionType nutrition_accumulate_week() {
@@ -484,7 +547,7 @@ void reset_day_or_week() {
 	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 
 	display_clear();
 
@@ -510,7 +573,7 @@ void reset_day_or_week() {
 
 void display_week_summary() {
 	display_clear();
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 	dumb_way_to_update_week();
 	struct NutritionType nutrition_temp = nutrition_accumulate_week();
 
@@ -603,13 +666,51 @@ void display_week_summary() {
 		}
 	}
 
+	goals_check_weekly(nutrition_temp);
 
 	display_off();
 	return;
 }
 
+void goals_check_weekly(struct NutritionType nutrition_temp) {
+	char buffer[DISPLAY_WIDTH];
+
+		display_clear();
+
+		if (nutrition_temp.sugar_g < SUGAR_GOAL_G_WEEKLY * 1.2 &&
+				nutrition_temp.sugar_g > SUGAR_GOAL_G_WEEKLY * 0.8) {
+			sprintf(buffer, "Great job on sugar!");
+			display_print_line(buffer, strlen(buffer), 0);
+		}
+		else if (nutrition_temp.sugar_g >= SUGAR_GOAL_G_WEEKLY * 1.2) {
+			sprintf(buffer, "Cut back on sugar!");
+			display_print_line(buffer, strlen(buffer), 0);
+		} else {
+			sprintf(buffer, "Under on sugar!");
+			display_print_line(buffer, strlen(buffer), 0);
+		}
+
+		if (nutrition_temp.caffeine_mg < CAFFEINE_GOAL_MG_WEEKLY * 1.2 &&
+				nutrition_temp.caffeine_mg > CAFFEINE_GOAL_MG_WEEKLY * 0.8) {
+			sprintf(buffer, "Great job on caff!");
+			display_print_line(buffer, strlen(buffer), 2);
+		}
+		else if (nutrition_temp.caffeine_mg >= CAFFEINE_GOAL_MG_WEEKLY * 1.2) {
+			sprintf(buffer, "Cut back on caff!");
+			display_print_line(buffer, strlen(buffer), 2);
+		} else {
+			sprintf(buffer, "Under on caff!");
+			display_print_line(buffer, strlen(buffer), 2);
+		}
+
+		reset_buttons();
+		while (!ok_pressed && !menu_pressed);
+
+		return;
+}
+
 void display_update_time(RTC_TimeTypeDef currTime, RTC_DateTypeDef currDate) {
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 
 	sprintf(buffer, "Current Date:");
 	display_print_line(buffer, strlen(buffer), 0);
@@ -646,7 +747,7 @@ void display_time() {
 }
 
 void display_mass() {
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 	float mass_g;
 
 	reset_buttons();
@@ -661,7 +762,7 @@ void display_mass() {
 }
 
 void display_density() {
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 	float mass_g, volume_ml, density_g_ml;
 
 	reset_buttons();
@@ -939,7 +1040,7 @@ int display_guess(struct DrinkType guessed_drink) {
 	reset_buttons();
 	display_clear();
 
-	char buffer[20];
+	char buffer[DISPLAY_WIDTH];
 	display_print_line("Is this your drink?", strlen("Is this your drink?"), 0);
 	strcpy(buffer, "> ");
 	strcat(buffer, guessed_drink.name);
@@ -1283,8 +1384,8 @@ float height_read_raw() {
 
 float height_read_cm() {
 	float raw = height_read_raw();
-	float ratio = 4873.099237; //TBD
-	float height = (2560.0-560.0/(1-raw/ratio))/56.0;
+	float ratio = 4312.56; //TBD
+	float height = (3760.0-560.0/(1-raw/ratio))/56.0;
     return height;
 }
 
@@ -1371,7 +1472,7 @@ void display_test() {
 // BEST USAGE: create a 20 character buffer and write into the buffer with sprintf, then pass the buffer in here
 // ie.
 /*
- * char buffer[20];
+ * char buffer[DISPLAY_WIDTH];
  * sprintf(buffer, "my data: %.2f%%", my_float);
  * display_print_line(buffer, strlen(buffer), 0);
  */

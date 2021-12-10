@@ -153,6 +153,8 @@ void extern reset_buttons();
 void extern dumb_way_to_update_week();
 void extern reset_day_or_week();
 void extern set_demo_week();
+void extern goals_check_daily();
+void extern goals_check_weekly(struct NutritionType nutrition_temp);
 
 // Display Functions
 void extern display_test();
@@ -208,6 +210,12 @@ float extern volume_ml_read_avg();
 /* USER CODE BEGIN Private defines */
 #define MAIN_MENU_SIZE (12)
 #define NUM_DISPLAY_LINES (4)
+
+// Nutrition Defines
+#define SUGAR_GOAL_G_DAILY (30.0)
+#define SUGAR_GOAL_G_WEEKLY (7.0 * SUGAR_GOAL_G_DAILY)
+#define CAFFEINE_GOAL_MG_DAILY (400.0)
+#define CAFFEINE_GOAL_MG_WEEKLY (7.0 * CAFFEINE_GOAL_MG_DAILY)
 
 // Main Menu Options
 #define GUESS_LIQUID 0

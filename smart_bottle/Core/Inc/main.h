@@ -219,15 +219,15 @@ float extern volume_ml_read_avg();
 
 // Main Menu Options
 #define GUESS_LIQUID 0
-#define	DISPLAY_COLOR 1
+#define	DISPLAY_COLOR 7
 #define CHECK_DAY 2
 #define CHECK_WEEK 3
 #define CHECK_LEVEL 4
-#define DISPLAY_TIME 5
+#define DISPLAY_TIME 1
 #define SET_DEMO_VALUES 8
 #define RESET_DAY_OR_WEEK 9
-#define CHECK_MASS 6
-#define CHECK_DENSITY 7
+#define CHECK_MASS 5
+#define CHECK_DENSITY 6
 
 // Load Cell Defines
 #define NUM_LC_SAMPLES (10)

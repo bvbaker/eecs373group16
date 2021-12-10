@@ -783,13 +783,13 @@ void guess_liquid() {
 	struct DrinkType all_drinks[NUM_DRINKS + 2]; // +2 for none and unknown
 	struct DrinkType MtnDewRegular;
 	// color reading range
-	MtnDewRegular.min.r_perc = 34.5;
-	MtnDewRegular.min.g_perc = 35.0;
-	MtnDewRegular.min.b_perc = 27.5;
+	MtnDewRegular.min.r_perc = 20.5;
+	MtnDewRegular.min.g_perc = 33.5;
+	MtnDewRegular.min.b_perc = 33.5;
 
-	MtnDewRegular.max.r_perc = 36.5;
-	MtnDewRegular.max.g_perc = 37.0;
-	MtnDewRegular.max.b_perc = 29.5;
+	MtnDewRegular.max.r_perc = 32.0;
+	MtnDewRegular.max.g_perc = 40.0;
+	MtnDewRegular.max.b_perc = 40.0;
 
 	// nutrition data
 	MtnDewRegular.serving_size_ml = 591.0;
@@ -810,13 +810,13 @@ void guess_liquid() {
 	struct DrinkType MtnDewCodeRed;
 
 	// color reading range
-	MtnDewCodeRed.max.r_perc = 30.5;
-	MtnDewCodeRed.max.g_perc = 37.0;
-	MtnDewCodeRed.max.b_perc = 37.0;
+	MtnDewCodeRed.max.r_perc = 34.0;
+	MtnDewCodeRed.max.g_perc = 34.0;
+	MtnDewCodeRed.max.b_perc = 34.0;
 
-	MtnDewCodeRed.min.r_perc = 27.5;
-	MtnDewCodeRed.min.g_perc = 34.0;
-	MtnDewCodeRed.min.b_perc = 34.0;
+	MtnDewCodeRed.min.r_perc = 32.0;
+	MtnDewCodeRed.min.g_perc = 32.0;
+	MtnDewCodeRed.min.b_perc = 32.0;
 
 	// nutrition data
 	MtnDewCodeRed.serving_size_ml = 591.0;
@@ -852,6 +852,8 @@ void guess_liquid() {
 
 	strcpy(None.name, "Water");
 
+	all_drinks[DRINK_NONE] = None;
+
 
 	struct DrinkType Unknown = {0};
 	strcpy(Unknown.name, "Unknown Drink");
@@ -862,6 +864,8 @@ void guess_liquid() {
 	average.r_perc = 0.0;
 	average.g_perc = 0.0;
 	average.b_perc = 0.0;
+
+	all_drinks[DRINK_UNKNOWN] = Unknown;
 
 //	for (int i = 0; i < NUM_COLOR_SAMPLES; i++) {
 //		color_in = color_read_percent();
@@ -1256,7 +1260,8 @@ void load_cell_init() {
 	// Set LDO and Gain
 
 	buffer[0] = LOAD_CELL_CTRL_1;
-	buffer[1] = 0b00100111; // turn on analog and digital circuits
+	//          0b__LLLGGG
+	buffer[1] = 0b00100100; // turn on analog and digital circuits
 
 	// read status reg
 	ret = HAL_I2C_Master_Transmit(&hi2c1, (LOAD_CELL_I2C_ADDR), buffer, 2, HAL_MAX_DELAY);
@@ -1310,6 +1315,9 @@ void load_cell_init() {
 
 	_zeroOffset = load_cell_read_avg(NUM_LC_SAMPLES);
 
+	_zeroOffset = 5218.8999;
+//float zo_temp = _zeroOffset;
+//zo_temp += 1.0;
 }
 
 float load_cell_read_mass_g() {

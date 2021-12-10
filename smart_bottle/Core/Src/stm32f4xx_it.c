@@ -834,21 +834,29 @@ void guess_liquid() {
 
 	all_drinks[MTN_DEW_CODE_RED] = MtnDewCodeRed;
 
-	struct DrinkType None = {0};
+	struct DrinkType None;
 	// color reading range
-	None.max.r_perc = 27.5;
-	None.max.g_perc = 37.0;
-	None.max.b_perc = 37.0;
+	None.max.r_perc = 33.4;
+	None.max.g_perc = 33.4;
+	None.max.b_perc = 33.4;
 
-	None.min.r_perc = 27.5;
-	None.min.g_perc = 34.0;
-	None.min.b_perc = 34.0;
+	None.min.r_perc = 33.2;
+	None.min.g_perc = 33.2;
+	None.min.b_perc = 33.2;
+
+	None.serving_size_ml = 20.0;
+
+	None.already_guessed = 0;
+
+	None.nutrition_per_serving = nutrition_get_empty();
 
 	strcpy(None.name, "Water");
 
 
 	struct DrinkType Unknown = {0};
 	strcpy(Unknown.name, "Unknown Drink");
+
+	Unknown.already_guessed = 0;
 
 	struct RelativeColorType average;
 	average.r_perc = 0.0;
@@ -1384,8 +1392,8 @@ float height_read_raw() {
 
 float height_read_cm() {
 	float raw = height_read_raw();
-	float ratio = 4312.56; //TBD
-	float height = (3760.0-560.0/(1-raw/ratio))/56.0;
+	float ratio = 4055.9; //TBD
+	float height = (3200.0-560.0/(1-raw/ratio))/56.0;
     return height;
 }
 

@@ -133,9 +133,11 @@ int main(void)
 
 //  display_test(hi2c1);
 
-  load_cell_init();
+
 
   display_init();
+
+  load_cell_init();
 
   menu_init();
 
@@ -146,7 +148,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  HAL_Delay(5000);
+  HAL_Delay(1000);
   display_clear();
   display_off();
 
